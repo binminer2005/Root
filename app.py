@@ -24,6 +24,32 @@ app.config["USE_POSTGRES"] = bool(app.config["DATABASE_URL"])
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 
+def load_google_credentials():
+    client_id = os.environ.get("GOOGLE_CLIENT_ID")
+    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET")
+    if client_id and client_secret:
+        return client_id, client_secret
+
+    credentials_path = os.environ.get("GOOGLE_CLIENT_SECRET_FILE")
+    if not credentials_path:
+        credentials_path = next(
+            (os.path.join(app.root_path, name) for name in os.listdir(app.root_path) if name.startswith("client_secret") and name.endswith(".json")),
+            None,
+        )
+    if not credentials_path or not os.path.exists(credentials_path):
+        return client_id, client_secret
+
+    try:
+        with open(credentials_path, encoding="utf-8") as credentials_file:
+            credentials = json.load(credentials_file).get("web", {})
+    except (OSError, json.JSONDecodeError):
+        return client_id, client_secret
+    return client_id or credentials.get("client_id"), client_secret or credentials.get("client_secret")
+
+
+app.config["GOOGLE_CLIENT_ID"], app.config["GOOGLE_CLIENT_SECRET"] = load_google_credentials()
+
+
 class PostgresConnection:
     def __init__(self, connection):
         self.connection = connection
@@ -295,7 +321,7 @@ def sign():
             session["user_id"] = user["id"]
             return redirect(request.args.get("next") or url_for("home"))
         flash("Email hoặc mật khẩu chưa đúng.", "error")
-    return render_template("sign.html", **page_context("sign", google_enabled=bool(os.environ.get("GOOGLE_CLIENT_ID"))))
+    return render_template("sign.html", **page_context("sign", google_enabled=bool(app.config["GOOGLE_CLIENT_ID"])))
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -312,7 +338,7 @@ def register():
                 return redirect(url_for("home"))
             except (sqlite3.IntegrityError, psycopg.IntegrityError if psycopg else sqlite3.IntegrityError):
                 flash("Email này đã được đăng ký.", "error")
-    return render_template("register.html", **page_context("register", google_enabled=bool(os.environ.get("GOOGLE_CLIENT_ID"))))
+    return render_template("register.html", **page_context("register", google_enabled=bool(app.config["GOOGLE_CLIENT_ID"])))
 
 
 @app.route("/logout")
@@ -323,13 +349,13 @@ def logout():
 
 @app.route("/auth/google")
 def google_login():
-    if not os.environ.get("GOOGLE_CLIENT_ID") or not os.environ.get("GOOGLE_CLIENT_SECRET"):
+    if not app.config["GOOGLE_CLIENT_ID"] or not app.config["GOOGLE_CLIENT_SECRET"]:
         flash("Google OAuth chưa được cấu hình trên máy chủ.", "error")
         return redirect(url_for("sign"))
     state = secrets.token_urlsafe(24)
     session["google_state"] = state
     session["google_next"] = request.args.get("next") or request.referrer or url_for("home")
-    params = {"client_id": os.environ["GOOGLE_CLIENT_ID"], "redirect_uri": url_for("google_callback", _external=True), "response_type": "code", "scope": "openid email profile", "state": state, "access_type": "offline"}
+    params = {"client_id": app.config["GOOGLE_CLIENT_ID"], "redirect_uri": url_for("google_callback", _external=True), "response_type": "code", "scope": "openid email profile", "state": state, "access_type": "offline"}
     return redirect("https://accounts.google.com/o/oauth2/v2/auth?" + urlencode(params))
 
 
@@ -338,7 +364,7 @@ def google_callback():
     if request.args.get("state") != session.pop("google_state", None):
         flash("Phiên đăng nhập Google không hợp lệ.", "error")
         return redirect(url_for("sign"))
-    data = urlencode({"code": request.args.get("code"), "client_id": os.environ["GOOGLE_CLIENT_ID"], "client_secret": os.environ["GOOGLE_CLIENT_SECRET"], "redirect_uri": url_for("google_callback", _external=True), "grant_type": "authorization_code"}).encode()
+    data = urlencode({"code": request.args.get("code"), "client_id": app.config["GOOGLE_CLIENT_ID"], "client_secret": app.config["GOOGLE_CLIENT_SECRET"], "redirect_uri": url_for("google_callback", _external=True), "grant_type": "authorization_code"}).encode()
     with urlopen(Request("https://oauth2.googleapis.com/token", data=data, headers={"Content-Type": "application/x-www-form-urlencoded"})) as response:
         token = json.loads(response.read())
     with urlopen(Request("https://openidconnect.googleapis.com/v1/userinfo", headers={"Authorization": "Bearer " + token["access_token"]})) as response:
