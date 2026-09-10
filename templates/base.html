@@ -7,7 +7,7 @@
     <title>{% block title %}Roof{% endblock %}</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='style.css', v='21') }}"
+      href="{{ url_for('static', filename='style.css', v='25') }}"
     />
   </head>
   <body>
@@ -42,11 +42,22 @@
           >
         </nav>
         <div class="nav-actions">
+          <form class="search-form nav-search" action="{{ url_for('search') }}" method="get">
+            <label class="sr-only" for="nav-search-input">Tìm kiếm</label>
+            <input id="nav-search-input" name="q" type="search" placeholder="Tìm kiếm" />
+            <button type="submit" aria-label="Tìm kiếm">⌕</button>
+          </form>
           {% if current_user %}
-          <a class="text-link" href="{{ url_for('write_article') }}">Viết bài</a>
-          <a class="text-link" href="{{ url_for('my_articles') }}">Bài của tôi</a>
-          {% if current_user.role == 'admin' %}<a class="text-link" href="{{ url_for('admin_dashboard') }}">Admin</a>{% endif %}
-          <a class="button button-dark" href="{{ url_for('logout') }}">Đăng xuất</a>
+          <details class="account-menu">
+            <summary><span class="account-avatar">{{ current_user.name[:1]|upper }}</span><span class="account-name">{{ current_user.name }}</span><span aria-hidden="true">⌄</span></summary>
+            <div class="account-dropdown">
+              <a href="{{ url_for('profile') }}"><strong>Trang cá nhân</strong><small>Thông tin và số bài đăng</small></a>
+              <a href="{{ url_for('write_article') }}"><strong>Viết bài</strong><small>Gửi bài cho Roof</small></a>
+              <a href="{{ url_for('my_articles') }}"><strong>Bài viết của tôi</strong><small>Theo dõi trạng thái bài</small></a>
+              {% if current_user.role == 'admin' %}<a href="{{ url_for('admin_dashboard') }}"><strong>Quản trị</strong><small>Đăng bài và duyệt bài</small></a>{% endif %}
+              <a class="account-logout" href="{{ url_for('logout') }}">Đăng xuất</a>
+            </div>
+          </details>
           {% else %}
           <a class="text-link" href="{{ url_for('sign') }}">Đăng nhập</a>
           <a class="button button-dark" href="{{ url_for('register') }}">Tham gia</a>

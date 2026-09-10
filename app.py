@@ -3,7 +3,7 @@ import os
 import secrets
 import sqlite3
 from functools import wraps
-from urllib.parse import urlencode
+from urllib.parse import parse_qs, urlencode, urlparse
 from urllib.request import Request, urlopen
 
 from flask import Flask, flash, g, redirect, render_template, request, session, url_for
@@ -125,6 +125,7 @@ def init_db():
                 duration TEXT NOT NULL,
                 tone TEXT NOT NULL DEFAULT 'moss',
                 audio_url TEXT,
+                youtube_url TEXT,
                 status TEXT NOT NULL DEFAULT 'published',
                 created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE (kind, title)
@@ -165,6 +166,7 @@ def init_db():
             duration TEXT NOT NULL,
             tone TEXT NOT NULL DEFAULT 'moss',
             audio_url TEXT,
+            youtube_url TEXT,
             status TEXT NOT NULL DEFAULT 'published',
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             UNIQUE (kind, title)
@@ -205,6 +207,7 @@ def migrate_schema(db):
         },
         "episodes": {
             "audio_url": "TEXT",
+            "youtube_url": "TEXT",
             "status": "TEXT NOT NULL DEFAULT 'published'",
             "created_at": "TEXT",
         },
@@ -229,11 +232,11 @@ def seed_episodes(db):
     with open(os.path.join(app.root_path, "content.json"), encoding="utf-8") as content_file:
         content = json.load(content_file)
     for episode in content.get("episodes", []):
-        values = (episode["kind"], episode["title"], episode["description"], episode.get("time", ""), episode.get("tone", "moss"), episode.get("audio_url"))
+        values = (episode["kind"], episode["title"], episode["description"], episode.get("time", ""), episode.get("tone", "moss"), episode.get("audio_url"), episode.get("youtube_url"))
         if app.config["USE_POSTGRES"]:
-            db.execute("INSERT INTO episodes (kind, title, description, duration, tone, audio_url) VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (kind, title) DO NOTHING", values)
+            db.execute("INSERT INTO episodes (kind, title, description, duration, tone, audio_url, youtube_url) VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (kind, title) DO NOTHING", values)
         else:
-            db.execute("INSERT OR IGNORE INTO episodes (kind, title, description, duration, tone, audio_url) VALUES (?, ?, ?, ?, ?, ?)", values)
+            db.execute("INSERT OR IGNORE INTO episodes (kind, title, description, duration, tone, audio_url, youtube_url) VALUES (?, ?, ?, ?, ?, ?, ?)", values)
 
 
 def load_episodes(kind=None):
@@ -244,6 +247,25 @@ def load_episodes(kind=None):
         params = (kind,)
     query += " ORDER BY created_at ASC, id ASC"
     return get_db().execute(query, params).fetchall()
+
+
+def youtube_embed_url(value):
+    """Return a safe YouTube embed URL for common share-link formats."""
+    if not value:
+        return None
+    parsed = urlparse(value.strip())
+    host = parsed.netloc.lower().split(":", 1)[0]
+    video_id = None
+    if host in {"youtu.be", "www.youtu.be"}:
+        video_id = parsed.path.strip("/").split("/")[0]
+    elif host in {"youtube.com", "www.youtube.com", "m.youtube.com"}:
+        if parsed.path == "/watch":
+            video_id = parse_qs(parsed.query).get("v", [None])[0]
+        elif parsed.path.startswith(("/embed/", "/shorts/")):
+            video_id = parsed.path.split("/")[2]
+    if video_id and len(video_id) == 11:
+        return f"https://www.youtube.com/embed/{video_id}"
+    return None
 
 
 @app.before_request
@@ -311,6 +333,16 @@ def landingpage():
 def home():
     rows = get_db().execute("SELECT * FROM articles WHERE status = 'published' ORDER BY created_at DESC").fetchall()
     return render_template("home.html", **page_context("home", articles=[article_view(row) for row in rows], episodes=load_episodes()))
+
+
+@app.route("/tim-kiem")
+def search():
+    query = request.args.get("q", "").strip()
+    rows = []
+    if query:
+        pattern = f"%{query}%"
+        rows = get_db().execute("SELECT * FROM articles WHERE status = 'published' AND (title LIKE ? OR excerpt LIKE ? OR body LIKE ?) ORDER BY created_at DESC", (pattern, pattern, pattern)).fetchall()
+    return render_template("search.html", **page_context("search", query=query, articles=[article_view(row) for row in rows]))
 
 
 @app.route("/sign", methods=["GET", "POST"])
@@ -415,6 +447,16 @@ def podcast():
     return render_template("Podcast.html", **page_context("podcast", episodes=load_episodes("Podcast")))
 
 
+@app.route("/podcast/<int:episode_id>")
+def podcast_detail(episode_id):
+    episode = get_db().execute("SELECT *, duration AS time FROM episodes WHERE id = ? AND kind = 'Podcast' AND status = 'published'", (episode_id,)).fetchone()
+    if episode is None:
+        return render_template("404.html"), 404
+    episode = dict(episode)
+    episode["youtube_embed_url"] = youtube_embed_url(episode.get("youtube_url"))
+    return render_template("podcast_detail.html", **page_context("podcast", episode=episode, episodes=load_episodes("Podcast")))
+
+
 @app.route("/viet-bai", methods=["GET", "POST"])
 @login_required
 def write_article():
@@ -436,11 +478,32 @@ def my_articles():
     return render_template("my_articles.html", **page_context("write", articles=rows))
 
 
+@app.route("/trang-ca-nhan")
+@login_required
+def profile():
+    counts = get_db().execute("SELECT status, COUNT(*) AS total FROM articles WHERE user_id = ? GROUP BY status", (g.user["id"],)).fetchall()
+    count_by_status = {row["status"]: row["total"] for row in counts}
+    return render_template("profile.html", **page_context("profile", article_count=sum(count_by_status.values()), pending_count=count_by_status.get("pending", 0), published_count=count_by_status.get("published", 0), rejected_count=count_by_status.get("rejected", 0)))
+
+
 @app.route("/admin")
 @admin_required
 def admin_dashboard():
     rows = get_db().execute("SELECT articles.*, users.email AS submitter_email FROM articles LEFT JOIN users ON users.id = articles.user_id ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END, created_at DESC").fetchall()
-    return render_template("admin.html", **page_context("admin", articles=rows))
+    return render_template("admin.html", **page_context("admin", articles=rows, episodes=load_episodes()))
+
+
+@app.route("/admin/episodes/<int:episode_id>/youtube", methods=["POST"])
+@admin_required
+def update_episode_youtube(episode_id):
+    youtube_url = request.form.get("youtube_url", "").strip()
+    if youtube_url and youtube_embed_url(youtube_url) is None:
+        flash("Link YouTube chưa đúng định dạng.", "error")
+        return redirect(url_for("admin_dashboard"))
+    get_db().execute("UPDATE episodes SET youtube_url = ? WHERE id = ?", (youtube_url or None, episode_id))
+    get_db().commit()
+    flash("Đã cập nhật video YouTube cho tập.", "success")
+    return redirect(url_for("admin_dashboard"))
 
 
 @app.route("/admin/articles/<int:article_id>/approve", methods=["POST"])

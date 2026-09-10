@@ -1,0 +1,18 @@
+{% extends 'base.html' %}{% block title %}{{ episode.title }} — Podcast — Roof{% endblock %}
+{% block content %}
+<section class="podcast-detail-hero">
+	<div class="wrap podcast-detail-hero-inner">
+		<a class="article-back" href="{{ url_for('podcast') }}">← Quay lại Podcast</a>
+		<div class="podcast-cover tone-{{ episode.tone }}"><span class="podcast-cover-number">{{ '%02d'|format(episode.id) }}</span><span class="podcast-cover-word">ROOF<br>CAST</span><span class="wave"></span></div>
+		<div class="podcast-detail-intro">
+			<div class="article-meta"><span class="tag cam-xuc">Podcast</span><span class="article-time">{{ episode.time }}</span></div>
+			<h1>{{ episode.title }}</h1>
+			<p class="article-lead">{{ episode.description }}</p>
+			<button class="button button-dark play detail-listen" data-title="{{ episode.title }}: {{ episode.description }}" data-description="Một cuộc trò chuyện của Roof về {{ episode.description }}." data-kind="{{ episode.kind }}" data-time="{{ episode.time }}">▶ Nghe tập này</button>
+		</div>
+	</div>
+</section>
+<section class="section podcast-detail-media"><div class="wrap"><div class="media-heading"><span class="eyebrow">XEM VIDEO</span><span>Chia sẻ trên YouTube</span></div>{% if episode.youtube_embed_url %}<div class="youtube-frame"><iframe src="{{ episode.youtube_embed_url }}" title="{{ episode.title }} trên YouTube" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>{% else %}<div class="youtube-empty"><div class="youtube-empty-mark">▶</div><div><strong>Video đang được chuẩn bị</strong><p>Tập này hiện chưa có video YouTube. Bạn vẫn có thể nghe bằng trình phát Roof ở cuối trang.</p></div></div>{% endif %}</div></section>
+<section class="section podcast-detail-copy"><div class="wrap podcast-detail-columns"><div><span class="eyebrow">VỀ TẬP NÀY</span><h2>Một khoảng nghỉ để nghe mình rõ hơn.</h2></div><div><p>Trong tập này, Roof cùng bạn ngồi lại với câu chuyện: {{ episode.description|lower }}. Hãy dành một khoảng nghỉ vừa đủ để lắng nghe.</p></div></div></section>
+<section class="section podcast-more"><div class="wrap"><div class="media-heading"><span class="eyebrow">NGHE TIẾP</span><a href="{{ url_for('podcast') }}">Xem tất cả →</a></div><div class="podcast-more-grid">{% for item in episodes if item.id != episode.id %}<a class="podcast-more-item" href="{{ url_for('podcast_detail', episode_id=item.id) }}"><span class="podcast-more-number">{{ '%02d'|format(item.id) }}</span><span><strong>{{ item.title }}</strong><small>{{ item.description }} · {{ item.time }}</small></span><span>→</span></a>{% endfor %}</div></div></section>
+{% endblock %}
