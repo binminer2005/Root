@@ -1,0 +1,34 @@
+{% extends 'base.html' %}{% block title %}Kiến thức — Roof{% endblock %}{%
+block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Tạp chí tri thức</span>
+    <h1>Kiến thức để hiểu mình và thế giới.</h1>
+    <p>
+      Ba luồng bài viết mở ra nhiều góc nhìn hơn cho cộng đồng.
+    </p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="chips">
+      {% for key,name in categories.items() %}<a
+        class="chip"
+        href="{{ url_for('category_page', category=key) }}"
+        >{{ name }}</a
+      >{% endfor %}
+    </div>
+    <div class="article-grid">
+      {% for article in articles %}
+      <article class="article-card">
+        <a class="thumb image-art image-{{ loop.index }}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}"></a>
+        <div class="card-meta"><span class="tag {{ article.category }}">{{ categories[article.category] }}</span><small>{{ article.time }} đọc</small></div>
+        <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
+        <p>{{ article.excerpt }}</p>
+        <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

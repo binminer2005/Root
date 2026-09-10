@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roof — Tạp chí tri thức &amp; cảm xúc</title>
+    <style>
+      @font-face{font-family:'DVN DMSans';src:url('/static/DMSans-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+      @font-face{font-family:'DVN DMSans';src:url('/static/DMSans-Medium.ttf') format('truetype');font-weight:500 600;font-display:swap}
+      @font-face{font-family:'DVN DMSans';src:url('/static/DMSans-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+    </style>
+    <style>
+      :root {
+        --bg: #F0F1E8;
+        --paper: #FAFBF7;
+        --moss-deep: #2B310A;
+        --moss: #4B5320;
+        --moss-bright: #929A68;
+        --moss-pale: #D9DEC2;
+        --clay: #68704A;
+        --sand: #AEB3B8;
+        --ink: #2B310A;
+        --ink-soft: #68704A;
+        --line: #AEB3B8;
+        --radius-s: 0;
+        --radius-m: 0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "DVN DMSans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+      ::selection {
+        background: var(--moss-bright);
+        color: var(--ink);
+      }
+      :focus-visible {
+        outline: 2px solid var(--moss-deep);
+        outline-offset: 3px;
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* ---------- NAV ---------- */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(247, 248, 241, 0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav {
+        max-width: 1180px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 28px;
+        gap: 24px;
+      }
+      .logo {
+        display: block;
+        width: 58px;
+        height: 58px;
+        flex: 0 0 58px;
+      }
+      .logo img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        font-size: 0.82rem;
+        font-weight: 500;
+        padding: 7px 14px;
+        border-radius: 0;
+        border: 1px solid var(--line);
+        color: var(--ink-soft);
+        background: transparent;
+        transition:
+          border-color 0.15s ease,
+          color 0.15s ease,
+          box-shadow 0.15s ease;
+        cursor: pointer;
+      }
+      .chip:hover {
+        color: var(--moss-deep);
+        border-color: var(--moss-bright);
+      }
+      .chip.is-active {
+        background: var(--moss-bright);
+        color: #F7F8F1;
+        border-color: var(--moss-deep);
+        color: var(--ink);
+        box-shadow: none;
+      }
+      .nav-search {
+        width: 34px;
+        height: 34px;
+        border-radius: 0;
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink-soft);
+        flex: none;
+        cursor: pointer;
+        background: transparent;
+      }
+      .nav-search:hover {
+        background: var(--moss-bright);
+        color: var(--ink);
+      }
+      .search-drawer {
+        display: none;
+        border-bottom: 1px solid var(--line);
+        background: var(--moss-bright);
+      }
+      .search-drawer.is-open {
+        display: block;
+      }
+      .search-drawer-inner {
+        padding-top: 18px;
+        padding-bottom: 18px;
+      }
+      .search-drawer label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .search-field {
+        display: flex;
+        max-width: 620px;
+        border: 1px solid var(--line);
+        background: var(--paper);
+      }
+      .search-field input {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        padding: 13px 14px;
+        font: inherit;
+        color: var(--ink);
+        outline: 0;
+      }
+      .search-field button {
+        width: 44px;
+        border: 0;
+        background: transparent;
+        font-size: 1.4rem;
+        cursor: pointer;
+        color: var(--ink-soft);
+      }
+      .search-status {
+        margin: 8px 0 0;
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+      }
+      .save-button {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--paper);
+        color: var(--ink);
+        cursor: pointer;
+        z-index: 2;
+      }
+      .save-button.is-saved {
+        background: var(--moss-deep);
+        color: var(--moss-bright);
+      }
+      .empty-state {
+        display: none;
+        grid-column: 1/-1;
+        padding: 44px 20px;
+        text-align: center;
+        border: 1px solid var(--line);
+        color: var(--ink-soft);
+      }
+      .empty-state.is-visible {
+        display: block;
+      }
+      .card.is-hidden,
+      .wave-card.is-hidden {
+        display: none;
+      }
+
+      /* ---------- HERO ---------- */
+      main.wrap {
+        background: var(--paper);
+        border-left: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+      }
+      .hero {
+        padding: 34px 12px 40px;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.62fr 1fr;
+        gap: 0;
+        align-items: stretch;
+      }
+      .eyebrow-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .tag {
+        font-size: 0.74rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        padding: 4px 10px;
+        border-radius: var(--radius-s);
+      }
+      .tag--hoc-thuat {
+        background: var(--moss-bright);
+        color: var(--ink);
+      }
+      .tag--cam-xuc {
+        background: var(--clay);
+        color: #F7F8F1;
+      }
+      .tag--chua-lanh {
+        background: #AEB3B8;
+        color: var(--ink);
+      }
+      .tag--radio {
+        background: var(--moss-deep);
+        color: #F7F8F1;
+      }
+      .tag--podcast {
+        background: var(--sand);
+        color: var(--ink);
+      }
+      .read-time {
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+      }
+
+      .hero-feature {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        overflow: hidden;
+      }
+      .hero-thumb {
+        height: 260px;
+        position: relative;
+        background: var(--clay);
+        overflow: hidden;
+      }
+      .hero-thumb svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .hero-body {
+        padding: 28px 30px 32px;
+        background: #F7F8F1;
+      }
+      .hero-title {
+        font-family: "DVN DMSans", sans-serif;
+        font-weight: 650;
+        font-size: 2.15rem;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        margin: 0 0 14px;
+        max-width: 19ch;
+      }
+      .hero-excerpt {
+        font-size: 1rem;
+        line-height: 1.65;
+        color: var(--ink-soft);
+        max-width: 58ch;
+        margin: 0 0 20px;
+      }
+      .hero-byline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.84rem;
+        color: var(--ink-soft);
+      }
+      .avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--clay);
+        flex: none;
+      }
+
+      /* ---------- SIDEBAR "ĐANG NỔI" ---------- */
+      .trending {
+        background: var(--moss-deep);
+        color: #E3E6D5;
+        border-left: 0;
+        padding: 26px 26px 10px;
+        height: 100%;
+      }
+      .trending h3 {
+        font-family: "DVN DMSans", sans-serif;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 1.2rem;
+        margin: 0 0 18px;
+        color: var(--moss-bright);
+      }
+      .trending ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .trending li {
+        display: flex;
+        gap: 14px;
+        padding: 14px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .trending li:first-child {
+        border-top: none;
+      }
+      .trending .rank {
+        font-family: "DVN DMSans", sans-serif;
+        font-weight: 560;
+        font-size: 1.3rem;
+        color: var(--moss-bright);
+        width: 26px;
+        flex: none;
+      }
+      .trending .t-title {
+        font-size: 0.92rem;
+        line-height: 1.4;
+      }
+      .trending .t-title a:hover {
+        color: var(--moss-bright);
+      }
+      .trending .t-meta {
+        font-size: 0.74rem;
+        color: rgba(227, 230, 213, 0.68);
+        margin-top: 4px;
+      }
+
+      /* ---------- SECTION HEADS ---------- */
+      .section {
+        padding: 36px 12px;
+      }
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 26px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 14px;
+      }
+      .section-head h2 {
+        font-family: "DVN DMSans", sans-serif;
+        font-weight: 650;
+        font-size: 1.5rem;
+        margin: 0;
+        color: var(--moss-deep);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .section-link {
+        font-size: 0.84rem;
+        color: var(--moss);
+        font-weight: 500;
+      }
+      .section-link:hover {
+        color: var(--moss-deep);
+      }
+
+      /* ---------- ARTICLE GRID ---------- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+      .card {
+        display: flex;
+        flex-direction: column;
+      }
+      .card {
+        padding: 14px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .card-thumb {
+        height: 164px;
+        margin: -14px -14px 14px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card-thumb svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .card .eyebrow-row {
+        margin-bottom: 10px;
+      }
+      .card-title {
+        font-family: "DVN DMSans", sans-serif;
+        font-weight: 560;
+        font-size: 1.14rem;
+        line-height: 1.28;
+        margin: 0 0 8px;
+      }
+      .card-title a:hover {
+        color: var(--moss-deep);
+      }
+      .card-excerpt {
+        font-size: 0.88rem;
+        line-height: 1.55;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+      .card:nth-child(4n + 1) .card-thumb {
+        background: var(--moss-deep) !important;
+      }
+      .card:nth-child(4n + 2) .card-thumb {
+        background: var(--clay) !important;
+      }
+      .card:nth-child(4n + 3) .card-thumb {
+        background: var(--moss-bright) !important;
+      }
+      .card:nth-child(4n) .card-thumb {
+        background: #AEB3B8 !important;
+      }
+
+      /* ---------- RADIO / PODCAST STRIP ---------- */
+      .strip-scroller {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scrollbar-width: thin;
+      }
+      .wave-card {
+        flex: 0 0 260px;
+        position: relative;
+        background: #F7F8F1;
+        border: 1px solid var(--line);
+        padding: 20px;
+      }
+      .wave-card .eyebrow-row {
+        margin-bottom: 12px;
+      }
+      .wave-visual {
+        height: 54px;
+        margin-bottom: 14px;
+      }
+      .play-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 14px;
+      }
+      .play-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--clay);
+        color: #F7F8F1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .wave-title {
+        font-family: "DVN DMSans", sans-serif;
+        font-weight: 560;
+        font-size: 1rem;
+        margin: 0 0 4px;
+      }
+      .wave-meta {
+        font-size: 0.76rem;
+        color: var(--ink-soft);
+      }
+
+      /* ---------- QUOTE BAND ---------- */
+      .band {
+        background: var(--moss-bright);
+        padding: 56px 0;
+      }
+      .band-inner {
+        max-width: 660px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .band p {
+        font-family: "DVN DMSans", sans-serif;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 1.55rem;
+        line-height: 1.5;
+        color: var(--moss-deep);
+        margin: 0 0 16px;
+      }
+      .band span {
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+      }
+
+      /* ---------- FOOTER ---------- */
+      footer {
+        background: var(--moss-deep);
+        color: #E3E6D5;
+        border-top: 1px solid var(--line);
+        padding: 44px 0 34px;
+      }
+      .footer-grid {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+      .footer-brand .logo {
+        margin-bottom: 8px;
+      }
+      .footer-brand p {
+        font-size: 0.86rem;
+        color: #AEB3B8;
+        max-width: 34ch;
+        line-height: 1.55;
+        margin: 0;
+      }
+      .footer-links {
+        display: flex;
+        gap: 56px;
+      }
+      .footer-col h4 {
+        font-size: 0.8rem;
+        color: var(--moss-bright);
+        font-weight: 600;
+        margin: 0 0 12px;
+      }
+      .footer-col a {
+        display: block;
+        font-size: 0.88rem;
+        padding: 5px 0;
+        color: #E3E6D5;
+      }
+      .footer-col a:hover {
+        color: var(--moss-deep);
+      }
+      .footer-bottom {
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        font-size: 0.78rem;
+        color: #AEB3B8;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      @media (max-width: 880px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .chips {
+          display: none;
+        }
+        .footer-grid {
+          flex-direction: column;
+        }
+        .footer-links {
+          gap: 32px;
+        }
+      }
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-title {
+          font-size: 1.7rem;
+        }
+        main.wrap {
+          border-left: 0;
+          border-right: 0;
+        }
+        .hero-grid {
+          display: block;
+        }
+        .trending {
+          border-top: 1px solid var(--line);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .draw {
+          stroke-dashoffset: 0 !important;
+        }
+      }
+
+      .draw {
+        stroke-dasharray: 600;
+        stroke-dashoffset: 600;
+        animation: draw 1.4s ease forwards 0.2s;
+      }
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <a href="#top" class="logo" aria-label="Roof"><img src="/static/Logo.png?v=roof-2" alt="Roof" /></a>
+        <nav class="chips" id="chipRow">
+          <button class="chip is-active" data-filter="all">Tất cả</button>
+          <button class="chip" data-filter="hoc-thuat">Học thuật</button>
+          <button class="chip" data-filter="cam-xuc">Cảm xúc</button>
+          <button class="chip" data-filter="chua-lanh">Chữa lành</button>
+          <button class="chip" data-filter="radio">Radio</button>
+          <button class="chip" data-filter="podcast">Podcast</button>
+          <button class="chip" data-filter="saved">Đã lưu</button>
+        </nav>
+        <button
+          class="nav-search"
+          id="searchToggle"
+          type="button"
+          aria-label="Tìm kiếm bài viết"
+          aria-expanded="false"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M21 21l-4.3-4.3"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="search-drawer" id="searchDrawer" aria-hidden="true">
+      <div class="wrap search-drawer-inner">
+        <label for="searchInput">Tìm trong Roof</label>
+        <div class="search-field">
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Tên bài, chủ đề hoặc chuyên mục"
+            autocomplete="off"
+          />
+          <button id="searchClear" type="button" aria-label="Xóa tìm kiếm">
+            ×
+          </button>
+        </div>
+        <p class="search-status" id="searchStatus">
+          Tìm theo tiêu đề, nội dung và chuyên mục.
+        </p>
+      </div>
+    </section>
+
+    <main class="wrap" id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-grid">
+          <article class="hero-feature">
+            <div class="hero-thumb">
+              <svg viewBox="0 0 600 260" preserveAspectRatio="none">
+                <path
+                  class="draw"
+                  d="M0,170 C90,120 150,210 240,160 C330,110 380,190 470,140 C520,115 560,150 600,120"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.55)"
+                  stroke-width="3"
+                />
+                <path
+                  d="M0,210 C100,170 180,230 260,190 C350,145 400,215 480,175 C530,150 570,180 600,160"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.28)"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <div class="hero-body">
+              <div class="eyebrow-row">
+                <span class="tag tag--cam-xuc">Cảm xúc</span>
+                <span class="tag tag--hoc-thuat">Học thuật</span>
+                <span class="read-time">Đọc 6 phút</span>
+              </div>
+              <h1 class="hero-title">
+                <a href="#">Vì sao ta luôn thấy mình chưa đủ tốt</a>
+              </h1>
+              <p class="hero-excerpt">
+                Không phải vì bạn thật sự kém, mà vì bộ não vốn được lập trình
+                để so sánh nhiều hơn để hài lòng. Một góc nhìn từ tâm lý học
+                nhận thức về cảm giác "chưa đủ" đang âm thầm điều khiển phần lớn
+                quyết định của ta.
+              </p>
+              <div class="hero-byline">
+                <span class="avatar"></span>
+                <span>Lam Chi · Chuyên mục Học thuật</span>
+              </div>
+            </div>
+          </article>
+
+          <aside class="trending">
+            <h3>Đang nổi tuần này</h3>
+            <ol>
+              <li>
+                <span class="rank">01</span>
+                <div>
+                  <div class="t-title">
+                    <a href="#"
+                      >Cô đơn thời hiện đại không phải vì thiếu người xung
+                      quanh</a
+                    >
+                  </div>
+                  <div class="t-meta">Chữa lành · 4.200 lượt đọc</div>
+                </div>
+              </li>
+              <li>
+                <span class="rank">02</span>
+                <div>
+                  <div class="t-title">
+                    <a href="#">Học cách xin lỗi mà không tự hạ thấp mình</a>
+                  </div>
+                  <div class="t-meta">Cảm xúc · 3.6k lượt đọc</div>
+                </div>
+              </li>
+              <li>
+                <span class="rank">03</span>
+                <div>
+                  <div class="t-title">
+                    <a href="#">Trì hoãn không phải vì lười, mà vì sợ</a>
+                  </div>
+                  <div class="t-meta">Học thuật · 3.1k lượt đọc</div>
+                </div>
+              </li>
+              <li>
+                <span class="rank">04</span>
+                <div>
+                  <div class="t-title">
+                    <a href="#">RoofTalk #12: Những cuộc gọi lúc nửa đêm</a>
+                  </div>
+                  <div class="t-meta">Radio · 2.4k lượt nghe</div>
+                </div>
+              </li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ARTICLE GRID -->
+      <section class="section" id="bai-viet">
+        <div class="section-head">
+          <h2>Mới trên Roof</h2>
+          <a href="#" class="section-link">Xem tất cả bài viết</a>
+        </div>
+        <div class="grid" id="cardGrid">
+          <article class="card" data-cat="hoc-thuat">
+            <div
+              class="card-thumb"
+              style="background: linear-gradient(150deg, #4B5320, #929A68)"
+            >
+              <svg viewBox="0 0 260 150">
+                <circle cx="60" cy="110" r="70" fill="rgba(255,255,255,0.12)" />
+                <circle cx="210" cy="30" r="45" fill="rgba(255,255,255,0.10)" />
+              </svg>
+            </div>
+            <div class="eyebrow-row">
+              <span class="tag tag--hoc-thuat">Học thuật</span
+              ><span class="read-time">5 phút</span>
+            </div>
+            <h3 class="card-title">
+              <a href="#">Não bộ tuổi 25 vẫn đang tự sửa mình</a>
+            </h3>
+            <p class="card-excerpt">
+              Vỏ não trước trán chưa "đóng cửa" như ta tưởng — và điều đó giải
+              thích vì sao những cú vấp ngã tuổi trưởng thành lại có giá trị hơn
+              ta nghĩ.
+            </p>
+          </article>
+
+          <article class="card" data-cat="cam-xuc">
+            <div
+              class="card-thumb"
+              style="background: linear-gradient(150deg, #AEB3B8, #E3E6D5)"
+            >
+              <svg viewBox="0 0 260 150">
+                <path
+                  d="M0,90 C60,50 100,130 160,80 C200,50 230,100 260,70"
+                  stroke="rgba(43,49,10,0.18)"
+                  stroke-width="6"
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <div class="eyebrow-row">
+              <span class="tag tag--cam-xuc">Cảm xúc</span
+              ><span class="read-time">4 phút</span>
+            </div>
+            <h3 class="card-title">
+              <a href="#">Khi nói "mình ổn" chỉ để không ai hỏi thêm</a>
+            </h3>
+            <p class="card-excerpt">
+              Có một kiểu im lặng không phải vì không có gì để nói, mà vì không
+              chắc ai sẽ đủ kiên nhẫn để nghe hết.
+            </p>
+          </article>
+
+          <article class="card" data-cat="chua-lanh">
+            <div
+              class="card-thumb"
+              style="background: linear-gradient(150deg, #929A68, #D9DEC2)"
+            >
+              <svg viewBox="0 0 260 150">
+                <rect
+                  x="30"
+                  y="40"
+                  width="60"
+                  height="60"
+                  rx="8"
+                  fill="rgba(75,83,32,0.14)"
+                  transform="rotate(18 60 70)"
+                />
+                <rect
+                  x="150"
+                  y="60"
+                  width="46"
+                  height="46"
+                  rx="8"
+                  fill="rgba(75,83,32,0.14)"
+                  transform="rotate(-12 173 83)"
+                />
+              </svg>
+            </div>
+            <div class="eyebrow-row">
+              <span class="tag tag--chua-lanh">Chữa lành</span
+              ><span class="read-time">6 phút</span>
+            </div>
+            <h3 class="card-title">
+              <a href="#">Nghỉ ngơi không phải phần thưởng, nó là nhu cầu</a>
+            </h3>
+            <p class="card-excerpt">
+              Ta hay đợi làm xong hết việc mới cho phép mình nghỉ. Nhưng cơ thể
+              không mặc cả theo cách đó.
+            </p>
+          </article>
+
+          <article class="card" data-cat="hoc-thuat">
+            <div
+              class="card-thumb"
+              style="background: linear-gradient(150deg, #2B310A, #4B5320)"
+            >
+              <svg viewBox="0 0 260 150">
+                <path
+                  d="M20,120 L60,60 L100,100 L140,40 L180,90 L220,30"
+                  stroke="rgba(255,255,255,0.3)"
+                  stroke-width="4"
+                  fill="none"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="eyebrow-row">
+              <span class="tag tag--hoc-thuat">Học thuật</span
+              ><span class="read-time">7 phút</span>
+            </div>
+            <h3 class="card-title">
+              <a href="#">Vì sao ta dễ tin người nói to hơn người nói đúng</a>
+            </h3>
+            <p class="card-excerpt">
+              Sự tự tin trong giọng nói đánh lừa não bộ mạnh hơn cả nội dung
+              được nói ra — một thiên kiến âm thầm chi phối rất nhiều cuộc tranh
+              luận.
+            </p>
+          </article>
+
+          <article class="card" data-cat="cam-xuc">
+            <div
+              class="card-thumb"
+              style="background: linear-gradient(150deg, #E3E6D5, #AEB3B8)"
+            >
+              <svg viewBox="0 0 260 150">
+                <circle cx="130" cy="75" r="4" fill="rgba(43,49,10,0.35)" />
+                <circle cx="100" cy="60" r="4" fill="rgba(43,49,10,0.25)" />
+                <circle cx="160" cy="95" r="4" fill="rgba(43,49,10,0.25)" />
+                <circle cx="70" cy="95" r="4" fill="rgba(43,49,10,0.2)" />
+                <circle cx="190" cy="60" r="4" fill="rgba(43,49,10,0.2)" />
+              </svg>
+            </div>
+            <div class="eyebrow-row">
+              <span class="tag tag--cam-xuc">Cảm xúc</span
+              ><span class="read-time">5 phút</span>
+            </div>
+            <h3 class="card-title">
+              <a href="#">Ghen tị không đáng xấu hổ như ta nghĩ</a>
+            </h3>
+            <p class="card-excerpt">
+              Nó chỉ là một tấm gương chỉ ra điều ta thật sự muốn — nếu ta đủ
+              can đảm để nhìn thẳng vào đó.
+            </p>
+          </article>
+
+          <article class="card" data-cat="chua-lanh">
+            <div
+              class="card-thumb"
+              style="background: linear-gradient(150deg, #D9DEC2, #929A68)"
+            >
+              <svg viewBox="0 0 260 150">
+                <path
+                  d="M0,40 Q65,10 130,40 T260,40"
+                  stroke="rgba(62,90,66,0.2)"
+                  stroke-width="10"
+                  fill="none"
+                />
+                <path
+                  d="M0,100 Q65,70 130,100 T260,100"
+                  stroke="rgba(62,90,66,0.12)"
+                  stroke-width="10"
+                  fill="none"
+                />
+              </svg>
+            </div>
+            <div class="eyebrow-row">
+              <span class="tag tag--chua-lanh">Chữa lành</span
+              ><span class="read-time">4 phút</span>
+            </div>
+            <h3 class="card-title">
+              <a href="#">Bạn không cần trở thành người khác để ổn hơn</a>
+            </h3>
+            <p class="card-excerpt">
+              Chữa lành nhiều khi không phải một cuộc lột xác, mà là học cách
+              đứng vững hơn trong chính con người mình.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- QUOTE BAND -->
+      <section class="band">
+        <div class="wrap band-inner">
+          <p>"Rêu không vội. Nó chỉ cần một chỗ đủ tĩnh để bắt đầu lan ra."</p>
+          <span>— Ghi chú biên tập, Roof</span>
+        </div>
+      </section>
+
+      <!-- RADIO / PODCAST -->
+      <section class="section" id="tan-song">
+        <div class="section-head">
+          <h2>Tần sóng đang phát</h2>
+          <a href="#" class="section-link">Nghe tất cả</a>
+        </div>
+        <div class="strip-scroller">
+          <div class="wave-card" data-cat="radio">
+            <div class="eyebrow-row">
+              <span class="tag tag--radio">Radio</span>
+            </div>
+            <svg
+              class="wave-visual"
+              viewBox="0 0 220 54"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,27 C20,5 40,49 60,27 C80,5 100,49 120,27 C140,5 160,49 180,27 C195,14 205,40 220,27"
+                stroke="#4B5320"
+                stroke-width="2.4"
+                fill="none"
+              />
+            </svg>
+            <h4 class="wave-title">RoofTalk #12</h4>
+            <div class="wave-meta">Những cuộc gọi lúc nửa đêm · 38 phút</div>
+            <div class="play-row">
+              <span class="play-btn"
+                ><svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" /></svg
+              ></span>
+              <span class="wave-meta">Phát lại tối thứ Sáu</span>
+            </div>
+          </div>
+
+          <div class="wave-card" data-cat="podcast">
+            <div class="eyebrow-row">
+              <span class="tag tag--podcast">Podcast</span>
+            </div>
+            <svg
+              class="wave-visual"
+              viewBox="0 0 220 54"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,40 C15,10 30,10 45,40 C60,10 75,10 90,40 C105,10 120,10 135,40 C150,10 165,10 180,40 C195,20 205,20 220,40"
+                stroke="#929A68"
+                stroke-width="2.4"
+                fill="none"
+              />
+            </svg>
+            <h4 class="wave-title">Roof Kể #04</h4>
+            <div class="wave-meta">
+              Người lớn cũng cần được dỗ dành · 44 phút
+            </div>
+            <div class="play-row">
+              <span class="play-btn"
+                ><svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" /></svg
+              ></span>
+              <span class="wave-meta">Tập mới mỗi thứ Ba</span>
+            </div>
+          </div>
+
+          <div class="wave-card" data-cat="radio">
+            <div class="eyebrow-row">
+              <span class="tag tag--radio">Radio</span>
+            </div>
+            <svg
+              class="wave-visual"
+              viewBox="0 0 220 54"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,20 C25,45 45,5 70,27 C95,49 115,5 140,27 C165,49 185,5 220,27"
+                stroke="#4B5320"
+                stroke-width="2.4"
+                fill="none"
+              />
+            </svg>
+            <h4 class="wave-title">RoofTalk #11</h4>
+            <div class="wave-meta">Sống chậm giữa thành phố ồn · 41 phút</div>
+            <div class="play-row">
+              <span class="play-btn"
+                ><svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" /></svg
+              ></span>
+              <span class="wave-meta">2.1k lượt nghe</span>
+            </div>
+          </div>
+
+          <div class="wave-card" data-cat="podcast">
+            <div class="eyebrow-row">
+              <span class="tag tag--podcast">Podcast</span>
+            </div>
+            <svg
+              class="wave-visual"
+              viewBox="0 0 220 54"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,30 C10,10 20,50 30,30 C40,10 50,50 60,30 C70,10 80,50 90,30 C100,10 110,50 120,30 C130,10 140,50 150,30 C160,10 170,50 180,30 C190,18 200,42 220,30"
+                stroke="#929A68"
+                stroke-width="2.2"
+                fill="none"
+              />
+            </svg>
+            <h4 class="wave-title">Roof Kể #03</h4>
+            <div class="wave-meta">Ranh giới không phải ích kỷ · 36 phút</div>
+            <div class="play-row">
+              <span class="play-btn"
+                ><svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" /></svg
+              ></span>
+              <span class="wave-meta">1.8k lượt nghe</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="logo"><img src="/static/Logo.png?v=roof-2" alt="Roof" /></div>
+            <p>
+              Một dự án đưa kiến thức tâm lý học đến gần hơn với đời sống,
+              giúp người Việt hiểu mình và phát triển bản thân.
+            </p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-col">
+              <h4>Chuyên mục</h4>
+              <a href="#">Học thuật</a>
+              <a href="#">Cảm xúc</a>
+              <a href="#">Chữa lành</a>
+            </div>
+            <div class="footer-col">
+              <h4>Nghe &amp; xem</h4>
+              <a href="#">Radio</a>
+              <a href="#">Podcast</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Roof</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const chips = document.querySelectorAll(".chip");
+      const cards = document.querySelectorAll("#cardGrid .card, .wave-card");
+      const searchToggle = document.querySelector("#searchToggle");
+      const searchDrawer = document.querySelector("#searchDrawer");
+      const searchInput = document.querySelector("#searchInput");
+      const searchClear = document.querySelector("#searchClear");
+      const searchStatus = document.querySelector("#searchStatus");
+      const savedKey = "roof-saved";
+      const saved = new Set(JSON.parse(localStorage.getItem(savedKey) || "[]"));
+      let activeFilter = "all";
+
+      const cardKey = (card) =>
+        card.querySelector("h3, h4")?.textContent.trim();
+      const saveState = () =>
+        localStorage.setItem(savedKey, JSON.stringify([...saved]));
+
+      cards.forEach((card) => {
+        const key = cardKey(card);
+        const target = card.querySelector(".card-thumb") || card;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "save-button";
+        button.setAttribute("aria-label", "Lưu bài viết");
+        button.innerHTML = saved.has(key) ? "★" : "☆";
+        button.classList.toggle("is-saved", saved.has(key));
+        button.addEventListener("click", () => {
+          if (saved.has(key)) saved.delete(key);
+          else saved.add(key);
+          saveState();
+          const isSaved = saved.has(key);
+          button.classList.toggle("is-saved", isSaved);
+          button.innerHTML = isSaved ? "★" : "☆";
+          button.setAttribute(
+            "aria-label",
+            isSaved ? "Bỏ lưu bài viết" : "Lưu bài viết",
+          );
+        });
+        target.append(button);
+      });
+
+      const applyFilters = () => {
+        const query = searchInput.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const matchesCategory =
+            activeFilter === "all" ||
+            (activeFilter === "saved"
+              ? saved.has(cardKey(card))
+              : card.dataset.cat === activeFilter);
+          const matchesSearch =
+            !query || card.textContent.toLowerCase().includes(query);
+          const show = matchesCategory && matchesSearch;
+          card.classList.toggle("is-hidden", !show);
+          if (show) visible += 1;
+        });
+        searchStatus.textContent = query
+          ? `${visible} nội dung phù hợp với “${searchInput.value.trim()}”.`
+          : "Tìm theo tiêu đề, nội dung và chuyên mục.";
+      };
+
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => c.classList.remove("is-active"));
+          chip.classList.add("is-active");
+          activeFilter = chip.dataset.filter;
+          applyFilters();
+        });
+      });
+
+      searchToggle.addEventListener("click", () => {
+        const isOpen = searchDrawer.classList.toggle("is-open");
+        searchDrawer.setAttribute("aria-hidden", String(!isOpen));
+        searchToggle.setAttribute("aria-expanded", String(isOpen));
+        if (isOpen) searchInput.focus();
+      });
+      searchInput.addEventListener("input", applyFilters);
+      searchClear.addEventListener("click", () => {
+        searchInput.value = "";
+        applyFilters();
+        searchInput.focus();
+      });
+    </script>
+  </body>
+</html>

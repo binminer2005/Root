@@ -1,0 +1,33 @@
+{% extends 'base.html' %}{% block title %}Roof — The Roots Of Us{% endblock
+%}{% block content %}
+<section class="page-hero landing-hero">
+  <div class="wrap">
+    <h1>The Roots Of Us</h1>
+    <p>
+      Một nền tảng blog đưa kiến thức tâm lý học đến gần hơn với đời sống, giúp người Việt hiểu mình và phát triển bản thân.
+    </p>
+    <a class="button button-dark" href="{{ url_for('home') }}"
+      >Khám phá Roof</a
+    >
+  </div>
+</section>
+<section class="section">
+  <div class="wrap article-grid landing-grid">
+    <article class="article-card">
+      <span class="tag">Tạp chí</span>
+      <h3>Đọc nhanh để thấy mình trong một câu chuyện</h3>
+      <p>Nhiều bài viết, nhiều tiếng nói, cùng một nhịp tò mò.</p>
+    </article>
+    <article class="article-card">
+      <span class="tag cam-xuc">Cộng đồng</span>
+      <h3>Lan tỏa điều đáng được gọi tên</h3>
+      <p>Nơi suy nghĩ cá nhân trở thành cuộc trò chuyện chung.</p>
+    </article>
+    <article class="article-card">
+      <span class="tag chua-lanh">Âm thanh</span>
+      <h3>Radio và podcast cho những khoảng nghỉ</h3>
+      <p>Những giọng nói đi cùng bạn trên đường về.</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

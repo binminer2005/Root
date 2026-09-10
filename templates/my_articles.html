@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block title %}Bài viết của tôi — Roof{% endblock %}
+{% block content %}<section class="section wrap"><div class="section-heading"><h1>Bài viết của tôi</h1><a class="button button-dark" href="{{ url_for('write_article') }}">Viết bài mới</a></div>
+{% for article in articles %}<article class="admin-row"><div><h2>{{ article.title }}</h2><p>{{ article.excerpt }}</p></div><strong class="status {{ article.status }}">{{ {'pending':'Chờ duyệt','published':'Đã đăng','rejected':'Từ chối'}[article.status] }}</strong></article>{% else %}<p>Bạn chưa gửi bài viết nào.</p>{% endfor %}</section>{% endblock %}

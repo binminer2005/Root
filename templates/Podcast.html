@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% block title %}Podcast — Roof{% endblock %}{%
+block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="tag cam-xuc">Podcast</span>
+    <h1>Những cuộc trò chuyện dài, không vội kết luận.</h1>
+    <p>
+      Ngồi lại cùng khách mời để đi qua những câu hỏi về cảm xúc, công việc và
+      cách lớn lên.
+    </p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap episode-list">
+    {% for episode in episodes %}
+    <article class="episode">
+      <div class="episode-art tone-{{ episode.tone }}"><span class="episode-index">0{{ loop.index }}</span><span class="wave"></span></div>
+      <div class="episode-copy">
+        <span class="tag cam-xuc">{{ episode.kind }}</span>
+        <h3>{{ episode.title }}</h3>
+        <p>{{ episode.description }} · {{ episode.time }}</p>
+      </div>
+      <button class="play" data-title="{{ episode.title }}: {{ episode.description }}" data-description="Một cuộc trò chuyện của Roof về {{ episode.description }}." data-kind="{{ episode.kind }}" data-time="{{ episode.time }}" aria-label="Phát {{ episode.title }}">▶</button>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

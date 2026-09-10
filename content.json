@@ -1,0 +1,99 @@
+{
+  "categories": {
+    "hoc-thuat": "Học thuật",
+    "cam-xuc": "Cảm xúc",
+    "chua-lanh": "Chữa lành"
+  },
+  "articles": [
+    {
+      "id": "nao-bo-tuoi-25",
+      "category": "hoc-thuat",
+      "title": "Não bộ tuổi 25 vẫn đang tự sửa mình",
+      "excerpt": "Vỏ não trước trán chưa đóng cửa như ta tưởng, và những cú vấp ngã tuổi trưởng thành có giá trị hơn ta nghĩ.",
+      "time": "5 phút",
+      "tone": "moss",
+      "author": "Lam Chi",
+      "sections": [
+        ["Một bộ não chưa hoàn tất", "Ở tuổi 25, ta thường nghĩ mình đã phải hiểu rõ bản thân. Nhưng não bộ vẫn đang tinh chỉnh những vùng liên quan đến lập kế hoạch, kiểm soát xung động và cân nhắc hậu quả. Sự trưởng thành vì thế không phải một cột mốc, mà là quá trình cập nhật liên tục."],
+        ["Vì sao sai lầm vẫn có ích", "Mỗi lần lựa chọn, thất vọng hoặc phải sửa một quyết định, não bộ nhận thêm dữ liệu về điều phù hợp với mình. Những trải nghiệm ấy không biến mất; chúng trở thành bản đồ tinh tế hơn cho các lựa chọn tiếp theo."],
+        ["Lớn lên không có nghĩa là chắc chắn", "Một người trưởng thành không phải người luôn biết phải làm gì. Đó là người có thể tạm dừng, nhìn lại thông tin mới và cho phép mình đổi hướng mà không xem đó là thất bại."]
+      ]
+    },
+    {
+      "id": "minh-on",
+      "category": "cam-xuc",
+      "title": "Khi mình nói mình ổn chỉ để không ai hỏi thêm",
+      "excerpt": "Có một kiểu im lặng không phải vì không có gì để nói, mà vì không chắc ai sẽ đủ kiên nhẫn để nghe hết.",
+      "time": "4 phút",
+      "tone": "clay",
+      "author": "An Nhiên",
+      "sections": [
+        ["Một câu trả lời để tự bảo vệ", "Mình ổn đôi khi không phải là một lời nói dối. Nó là cách nhanh nhất để giữ lại một chút riêng tư khi ta chưa biết bắt đầu câu chuyện từ đâu."],
+        ["Điều nằm sau sự im lặng", "Có thể là mệt mỏi, sợ bị đánh giá, hoặc đơn giản là chưa tìm được người đủ an toàn để nghe. Gọi đúng tên điều này giúp ta bớt trách mình vì đã không mở lòng ngay lập tức."],
+        ["Một câu trả lời khác", "Ta có thể thử nói: Mình chưa ổn lắm, nhưng chưa sẵn sàng kể. Câu nói ấy vừa thành thật, vừa giữ lại quyền quyết định nhịp độ cho chính mình."]
+      ]
+    },
+    {
+      "id": "nghi-ngoi",
+      "category": "chua-lanh",
+      "title": "Nghỉ ngơi không phải phần thưởng, nó là nhu cầu",
+      "excerpt": "Ta hay đợi làm xong hết việc mới cho phép mình nghỉ. Nhưng cơ thể không mặc cả theo cách đó.",
+      "time": "6 phút",
+      "tone": "leaf",
+      "author": "Mai Thư",
+      "sections": [
+        ["Tại sao ta thấy có lỗi khi nghỉ", "Nhiều người đã quen đo giá trị bản thân bằng năng suất. Khi không làm gì, họ không cảm thấy đang hồi phục mà cảm thấy mình đang tụt lại."],
+        ["Cơ thể không phải một dự án", "Nghỉ ngơi giúp hệ thần kinh trở về trạng thái có thể tập trung, kết nối và xử lý vấn đề. Nó không cần được kiếm bằng một danh sách công việc đã hoàn thành."],
+        ["Bắt đầu bằng một khoảng nhỏ", "Một bữa ăn không nhìn màn hình, mười phút đi bộ hoặc một buổi tối không giải quyết thêm việc đều là những cách hợp lệ để trở lại với cơ thể mình."]
+      ]
+    },
+    {
+      "id": "noi-to-hon-noi-dung",
+      "category": "hoc-thuat",
+      "title": "Vì sao ta dễ tin người nói to hơn người nói đúng",
+      "excerpt": "Sự tự tin trong giọng nói đánh lừa não bộ mạnh hơn cả nội dung được nói ra.",
+      "time": "7 phút",
+      "tone": "dark",
+      "author": "Minh Khoa",
+      "sections": [
+        ["Âm lượng không phải bằng chứng", "Trong một cuộc trò chuyện nhanh, não bộ thường dùng sự tự tin và tốc độ phản hồi như tín hiệu thay thế cho việc kiểm tra nội dung."],
+        ["Thiên kiến diễn ra thế nào", "Người nói chắc chắn khiến ta cảm thấy họ đã suy nghĩ kỹ, ngay cả khi lập luận còn thiếu dữ kiện. Cảm giác quen thuộc này làm giảm nhu cầu đặt câu hỏi."],
+        ["Tạo một nhịp chậm", "Trước một kết luận quá mạnh, hãy tách giọng điệu khỏi luận cứ và hỏi: bằng chứng là gì, điều gì có thể khiến nhận định này sai?"]
+      ]
+    },
+    {
+      "id": "ghen-ti",
+      "category": "cam-xuc",
+      "title": "Ghen tị không đáng xấu hổ như ta nghĩ",
+      "excerpt": "Nó là một tấm gương chỉ ra điều ta thật sự muốn, nếu ta đủ can đảm để nhìn thẳng.",
+      "time": "5 phút",
+      "tone": "sand",
+      "author": "Lam Chi",
+      "sections": [
+        ["Cảm xúc khó nói thành lời", "Ghen tị thường xuất hiện khi ta nhìn thấy ở người khác một điều chạm vào mong muốn, nỗi sợ hoặc cảm giác thiếu hụt của mình."],
+        ["Đừng vội biến nó thành bản án", "Cảm xúc chỉ là tín hiệu đầu tiên, không phải bằng chứng rằng ta là người xấu. Điều quan trọng là cách ta chọn hành động sau khi nhận ra nó."],
+        ["Đọc thông điệp phía sau", "Hãy thử viết xuống điều cụ thể khiến bạn chạnh lòng. Từ đó, sự so sánh có thể trở thành một câu hỏi thành thật về hướng đi mình muốn."]
+      ]
+    },
+    {
+      "id": "dung-vung-trong-minh",
+      "category": "chua-lanh",
+      "title": "Bạn không cần trở thành người khác để ổn hơn",
+      "excerpt": "Chữa lành nhiều khi không phải một cuộc lột xác, mà là học cách đứng vững hơn trong chính mình.",
+      "time": "4 phút",
+      "tone": "pale",
+      "author": "An Nhiên",
+      "sections": [
+        ["Áp lực phải thay đổi thật nhiều", "Ta dễ nghĩ rằng một phiên bản tốt hơn phải hoàn toàn mới: kỷ luật hơn, vui vẻ hơn và không còn những ngày chùng xuống."],
+        ["Ổn hơn không đồng nghĩa hoàn hảo", "Một thay đổi bền vững thường rất nhỏ. Đó có thể là nhận ra mình đang quá tải sớm hơn, biết nói không hoặc ngừng dùng một ngày tệ để kết luận về cả bản thân."],
+        ["Quay về với điều vừa đủ", "Bạn không cần biến thành ai khác để xứng đáng được chăm sóc. Hãy bắt đầu bằng việc đối xử với chính mình như một người đang học, không phải một bài toán cần sửa xong."]
+      ]
+    }
+  ],
+  "episodes": [
+    {"kind": "Radio", "title": "RoofTalk #1", "description": "Những cuộc gọi lúc nửa đêm", "time": "38 phút", "tone": "moss"},
+    {"kind": "Podcast", "title": "Roof Kể #1", "description": "Người lớn cũng cần được dỗ dành", "time": "44 phút", "tone": "clay"},
+    {"kind": "Radio", "title": "RoofTalk #2", "description": "Sống chậm giữa thành phố ồn", "time": "41 phút", "tone": "leaf"},
+    {"kind": "Podcast", "title": "Roof Kể #2", "description": "Ranh giới không phải ích kỷ", "time": "36 phút", "tone": "sand"}
+  ]
+}

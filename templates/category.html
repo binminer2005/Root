@@ -1,0 +1,25 @@
+{% extends 'base.html' %}{% block title %}{{ category_name }} — Roof{%
+endblock %}{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <span class="tag {{ category_key }}">{{ category_name }}</span>
+    <h1>{{ category_name }}</h1>
+    <p>Một luồng đọc dành cho những câu hỏi cần được nhìn thêm một lần nữa.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="article-grid">
+      {% for article in articles %}
+      <article class="article-card">
+        <a class="thumb image-art image-{{ loop.index }}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}"></a>
+        <div class="card-meta"><span class="tag {{ article.category }}">{{ category_name }}</span><small>{{ article.time }} đọc</small></div>
+        <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
+        <p>{{ article.excerpt }}</p>
+        <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

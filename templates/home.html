@@ -1,0 +1,61 @@
+{% extends 'base.html' %}{% block title %}Trang chủ — Roof{% endblock %}{%
+block content %}
+<div class="wrap home-wrap">
+  <section class="hero-editorial">
+    <article class="feature">
+      <a class="feature-art image-art image-art-main" href="{{ url_for('article_detail', article_id='nao-bo-tuoi-25') }}" aria-label="Đọc bài Não bộ tuổi 25 vẫn đang tự sửa mình"></a>
+      <div class="feature-body">
+        <div class="kicker-row"><span class="tag hoc-thuat">Học thuật</span><span class="reading-time">5 phút đọc</span></div>
+        <h1>Não bộ tuổi 25 vẫn đang tự sửa mình</h1>
+        <p>Ta không hề chậm lớn. Não bộ chỉ đang âm thầm cập nhật bản đồ của chính mình.</p>
+        <a class="story-link" href="{{ url_for('article_detail', article_id='nao-bo-tuoi-25') }}">Đọc bài <span>↗</span></a>
+      </div>
+    </article>
+    <aside class="trending">
+      <div class="module-label"><span>01</span><h2>Được đọc nhiều</h2></div>
+      {% for article in articles[:4] %}
+      <a class="trend" href="{{ url_for('article_detail', article_id=article.slug) }}"><span class="rank">0{{ loop.index }}</span><span class="trend-copy"><strong>{{ article.title }}</strong><small>{{ article.time }} đọc · {{ ['4.700', '4.600', '4.500', '4.400'][loop.index0] }} lượt xem</small></span></a>
+      {% endfor %}
+      <a class="all-link" href="#bai-viet">Xem toàn bộ bài viết <span>→</span></a>
+    </aside>
+  </section>
+</div>
+
+<section class="section latest-section" id="bai-viet">
+  <div class="wrap">
+    <div class="section-heading"><div><span class="section-number">02</span><h2>Mới trên Roof</h2></div><span class="eyebrow">Nhiều luồng, một nhịp đọc</span></div>
+    <div class="chips"><button class="chip active" data-filter="all">Tất cả</button>{% for key,name in categories.items() %}<button class="chip" data-filter="{{ key }}">{{ name }}</button>{% endfor %}</div>
+    <div class="article-grid" id="articleGrid">
+      {% for article in articles %}
+      <article class="article-card" data-category="{{ article.category }}">
+        <a class="thumb image-art image-{{ loop.index }}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}"></a>
+        <div class="card-meta"><span class="tag {{ article.category }}">{{ categories[article.category] }}</span><small>{{ article.time }} đọc</small></div>
+        <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
+        <p>{{ article.excerpt }}</p>
+        <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section audio-section">
+  <div class="wrap">
+    <div class="section-heading"><div><span class="section-number">03</span><h2>Tần sóng đang phát</h2></div><a class="more-link" href="{{ url_for('radio') }}">Xem tất cả <span>→</span></a></div>
+    <div class="episode-list">
+      {% for episode in episodes %}
+      <article class="episode"><div class="episode-art tone-{{ episode.tone }}"><span class="episode-index">0{{ loop.index }}</span><span class="wave"></span></div><div class="episode-copy"><span class="tag">{{ episode.kind }}</span><h3>{{ episode.title }}: {{ episode.description }}</h3><p>{{ episode.time }} · Một cuộc trò chuyện của Roof</p></div><button class="play" data-title="{{ episode.title }}: {{ episode.description }}" data-description="Một cuộc trò chuyện của Roof về {{ episode.description }}." data-kind="{{ episode.kind }}" data-time="{{ episode.time }}" aria-label="Phát {{ episode.title }}">▶</button></article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.querySelectorAll(".chip").forEach((chip) => chip.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach((item) => item.classList.remove("active"));
+    chip.classList.add("active");
+    document.querySelectorAll("#articleGrid .article-card").forEach((card) => card.classList.toggle("hidden", chip.dataset.filter !== "all" && card.dataset.category !== chip.dataset.filter));
+  }));
+</script>
+{% endblock %}

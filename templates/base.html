@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo.png', v='roof-2') }}" />
+    <title>{% block title %}Roof{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css', v='21') }}"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav wrap">
+        <a class="logo" href="{{ url_for('home') }}" aria-label="Roof"><img src="{{ url_for('static', filename='Logo.png', v='roof-2') }}" alt="Roof" /></a>
+        <nav class="nav-links" aria-label="Điều hướng chính">
+          <a
+            class="{{ 'active' if active == 'home' }}"
+            href="{{ url_for('home') }}"
+            >Trang chủ</a
+          >
+          <a
+            class="{{ 'active' if active == 'kien-thuc' }}"
+            href="{{ url_for('kien_thuc') }}"
+            >Kiến thức</a
+          >
+          <a
+            class="{{ 'active' if active == 'radio' }}"
+            href="{{ url_for('radio') }}"
+            >Radio</a
+          >
+          <a
+            class="{{ 'active' if active == 'podcast' }}"
+            href="{{ url_for('podcast') }}"
+            >Podcast</a
+          >
+          <a
+            class="{{ 'active' if active == 'landing' }}"
+            href="{{ url_for('landingpage') }}"
+            >Về Roof</a
+          >
+        </nav>
+        <div class="nav-actions">
+          {% if current_user %}
+          <a class="text-link" href="{{ url_for('write_article') }}">Viết bài</a>
+          <a class="text-link" href="{{ url_for('my_articles') }}">Bài của tôi</a>
+          {% if current_user.role == 'admin' %}<a class="text-link" href="{{ url_for('admin_dashboard') }}">Admin</a>{% endif %}
+          <a class="button button-dark" href="{{ url_for('logout') }}">Đăng xuất</a>
+          {% else %}
+          <a class="text-link" href="{{ url_for('sign') }}">Đăng nhập</a>
+          <a class="button button-dark" href="{{ url_for('register') }}">Tham gia</a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}<div class="flash-stack wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% endwith %}
+    <main>{% block content %}{% endblock %}</main>
+    <section class="audio-player" id="audioPlayer" aria-label="Trình phát Roof" hidden>
+      <div class="player-detail" id="playerDetail" hidden>
+        <div class="player-detail-inner wrap">
+          <div class="detail-cover"><span class="detail-wave"></span><span id="detailKind">RADIO</span></div>
+          <div class="detail-copy"><span class="detail-eyebrow">ĐANG PHÁT TRÊN ROOF</span><h2 id="detailTitle">Chưa chọn tập</h2><p id="detailDescription">Chọn một tập Radio hoặc Podcast để bắt đầu lắng nghe.</p><div class="detail-meta"><span id="detailTime">-- phút</span><span>·</span><span>Không làm gián đoạn việc đọc</span></div></div>
+          <aside class="detail-queue" aria-label="Mục lục các tập đang có">
+            <div class="detail-queue-heading"><span>MỤC LỤC</span><small id="queueCount"></small></div>
+            <div class="detail-queue-list" id="detailQueueList"></div>
+          </aside>
+          <button class="detail-close" id="detailClose" type="button" aria-label="Thu gọn trình phát">↓</button>
+          <div class="detail-progress"><span id="detailProgress"></span></div>
+          <div class="detail-controls"><button class="player-control player-prev" type="button" aria-label="Tập trước">|◀</button><button class="detail-main-control player-toggle" type="button" aria-label="Phát">▶</button><button class="player-control player-next" type="button" aria-label="Tập tiếp theo">▶|</button></div>
+        </div>
+      </div>
+      <div class="audio-player-inner wrap">
+        <button class="player-art player-expand" id="playerExpand" type="button" aria-label="Mở giao diện nghe chi tiết"><span class="player-wave"></span></button>
+        <button class="player-info player-expand" type="button" aria-label="Mở giao diện nghe chi tiết"><span id="playerKind">Radio</span><strong id="playerTitle">Chưa chọn tập</strong><small id="playerMeta">Sẵn sàng phát</small></button>
+        <button class="player-control player-prev" type="button" aria-label="Tập trước">|◀</button>
+        <button class="player-control player-toggle" id="playerToggle" type="button" aria-label="Phát">▶</button>
+        <button class="player-control player-next" type="button" aria-label="Tập tiếp theo">▶|</button>
+        <div class="player-progress"><span id="playerProgress"></span></div>
+        <button class="player-close" id="playerClose" type="button" aria-label="Đóng trình phát">×</button>
+      </div>
+    </section>
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div>
+          <a class="logo logo-light" href="{{ url_for('home') }}" aria-label="Roof"><img src="{{ url_for('static', filename='Root_LogoWhite.png', v='roof-2') }}" alt="Roof" /></a>
+          <p class="footer-tagline">The Roots Of Us</p>
+        </div>
+        <div>
+          <strong>Khám phá</strong
+          ><a href="{{ url_for('kien_thuc') }}">Kiến thức</a
+          ><a href="{{ url_for('radio') }}">Radio</a
+          ><a href="{{ url_for('podcast') }}">Podcast</a
+          ><a href="{{ url_for('landingpage') }}">Về Roof</a>
+        </div>
+        <div>
+          <strong>Tài khoản</strong>
+          <a href="{{ url_for('sign') }}">Đăng nhập</a>
+          <a href="{{ url_for('register') }}">Tham gia Roof</a>
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        © 2026 Roof
+      </div>
+    </footer>
+    {% block scripts %}{% endblock %}
+    <script>
+      const articleLinks = {
+        "Não bộ tuổi 25 vẫn đang tự sửa mình": "/bai-viet/nao-bo-tuoi-25",
+        "Khi nói mình ổn chỉ để không ai hỏi thêm": "/bai-viet/minh-on",
+        "Nghỉ ngơi không phải phần thưởng, nó là nhu cầu":
+          "/bai-viet/nghi-ngoi",
+        "Vì sao ta dễ tin người nói to hơn người nói đúng":
+          "/bai-viet/noi-to-hon-noi-dung",
+        "Ghen tị không đáng xấu hổ như ta nghĩ": "/bai-viet/ghen-ti",
+        "Bạn không cần trở thành người khác để ổn hơn":
+          "/bai-viet/dung-vung-trong-minh",
+      };
+      document.querySelectorAll(".article-card h3").forEach((heading) => {
+        const link = articleLinks[heading.textContent.trim()];
+        if (link && !heading.querySelector("a"))
+          heading.innerHTML = `<a href="${link}">${heading.textContent}</a>`;
+      });
+
+      const player = document.querySelector("#audioPlayer");
+      const playerTitle = document.querySelector("#playerTitle");
+      const playerKind = document.querySelector("#playerKind");
+      const playerMeta = document.querySelector("#playerMeta");
+      const playerProgress = document.querySelector("#playerProgress");
+      const playerToggle = document.querySelector("#playerToggle");
+      let playerTimer;
+      let playerPercent = 0;
+      let playerItems = [];
+      let playerIndex = 0;
+      const playerStorageKey = "roof-audio-player";
+
+      function savePlayerState(isPlaying = player.classList.contains("is-playing")) {
+        const item = playerItems[playerIndex];
+        if (!item) return;
+        localStorage.setItem(playerStorageKey, JSON.stringify({
+          title: item.dataset.title,
+          description: item.dataset.description,
+          kind: item.dataset.kind,
+          time: item.dataset.time,
+          percent: playerPercent,
+          isPlaying,
+        }));
+      }
+
+      function pausePlayer() {
+        window.clearInterval(playerTimer);
+        player.classList.remove("is-playing");
+        playerToggle.textContent = "▶";
+        playerMeta.textContent = "Đã tạm dừng";
+        savePlayerState(false);
+      }
+
+      function startPlayer() {
+        player.classList.add("is-playing");
+        playerToggle.textContent = "Ⅱ";
+        playerMeta.textContent = "Đang phát · Roof";
+        playerTimer = window.setInterval(() => {
+          playerPercent = Math.min(playerPercent + 1, 100);
+          playerProgress.style.width = `${playerPercent}%`;
+          if (detailProgress) detailProgress.style.width = `${playerPercent}%`;
+          savePlayerState(true);
+          if (playerPercent === 100) pausePlayer();
+        }, 600);
+      }
+
+      function openPlayer(button) {
+        playerItems = [...document.querySelectorAll(".play")];
+        playerIndex = playerItems.indexOf(button);
+        playerTitle.textContent = button.dataset.title;
+        playerKind.textContent = button.dataset.kind;
+        playerMeta.textContent = `${button.dataset.time} · Đang chờ phát`;
+        playerPercent = 0;
+        playerProgress.style.width = "0%";
+        player.hidden = false;
+        window.clearInterval(playerTimer);
+        startPlayer();
+        syncDetail(button);
+        savePlayerState(true);
+      }
+
+      document.querySelectorAll(".play").forEach((button) => button.addEventListener("click", () => openPlayer(button)));
+      playerToggle.addEventListener("click", () => player.classList.contains("is-playing") ? pausePlayer() : startPlayer());
+      document.querySelector(".player-prev").addEventListener("click", () => { if (playerItems.length) openPlayer(playerItems[(playerIndex - 1 + playerItems.length) % playerItems.length]); });
+      document.querySelector(".player-next").addEventListener("click", () => { if (playerItems.length) openPlayer(playerItems[(playerIndex + 1) % playerItems.length]); });
+      const playerDetail = document.querySelector("#playerDetail");
+      const detailTitle = document.querySelector("#detailTitle");
+      const detailKind = document.querySelector("#detailKind");
+      const detailDescription = document.querySelector("#detailDescription");
+      const detailTime = document.querySelector("#detailTime");
+      const detailProgress = document.querySelector("#detailProgress");
+      const detailToggle = document.querySelector(".detail-main-control");
+      const detailQueueList = document.querySelector("#detailQueueList");
+      const queueCount = document.querySelector("#queueCount");
+
+      function syncDetail(button) {
+        detailTitle.textContent = button.dataset.title;
+        detailKind.textContent = button.dataset.kind;
+        detailDescription.textContent = button.dataset.description;
+        detailTime.textContent = button.dataset.time;
+        detailProgress.style.width = `${playerPercent}%`;
+        detailToggle.textContent = player.classList.contains("is-playing") ? "Ⅱ" : "▶";
+        renderQueue();
+      }
+
+      function restorePlayer() {
+        const saved = JSON.parse(localStorage.getItem(playerStorageKey) || "null");
+        if (!saved) return;
+        const pageItems = [...document.querySelectorAll(".play")];
+        const matchingItem = pageItems.find((item) => item.dataset.title === saved.title);
+        const restoredItem = matchingItem || { dataset: saved };
+        playerItems = matchingItem ? pageItems : [restoredItem, ...pageItems];
+        playerIndex = matchingItem ? pageItems.indexOf(matchingItem) : 0;
+        playerTitle.textContent = saved.title;
+        playerKind.textContent = saved.kind;
+        playerMeta.textContent = saved.isPlaying ? "Đang phát · Roof" : "Đã tạm dừng";
+        playerPercent = Number(saved.percent) || 0;
+        playerProgress.style.width = `${playerPercent}%`;
+        player.hidden = false;
+        if (saved.isPlaying) startPlayer();
+      }
+
+      function renderQueue() {
+        queueCount.textContent = `${playerItems.length} tập`;
+        detailQueueList.innerHTML = playerItems.map((item, index) => `
+          <button class="queue-item${index === playerIndex ? " is-current" : ""}" type="button" data-queue-index="${index}">
+            <span class="queue-index">${String(index + 1).padStart(2, "0")}</span>
+            <span class="queue-copy"><strong>${item.dataset.title}</strong><small>${item.dataset.time}</small></span>
+            <span class="queue-state">${index === playerIndex ? "ĐANG NGHE" : "▶"}</span>
+          </button>
+        `).join("");
+      }
+
+      document.querySelectorAll(".player-expand").forEach((button) => button.addEventListener("click", () => { if (!player.hidden) { playerDetail.hidden = false; syncDetail(playerItems[playerIndex]); } }));
+      detailQueueList.addEventListener("click", (event) => {
+        const item = event.target.closest("[data-queue-index]");
+        if (item) openPlayer(playerItems[Number(item.dataset.queueIndex)]);
+      });
+      document.querySelector("#detailClose").addEventListener("click", () => { playerDetail.hidden = true; });
+      detailToggle.addEventListener("click", () => { player.classList.contains("is-playing") ? pausePlayer() : startPlayer(); syncDetail(playerItems[playerIndex]); });
+      document.querySelector("#playerClose").addEventListener("click", () => { pausePlayer(); localStorage.removeItem(playerStorageKey); player.hidden = true; playerDetail.hidden = true; });
+      restorePlayer();
+    </script>
+  </body>
+</html>
