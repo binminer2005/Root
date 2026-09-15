@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% block title %}{{ category_name }} — Roof{%
+{% extends 'base.html' %}{% block title %}{{ category_name }} — Root{%
 endblock %}{% block content %}
 <section class="page-hero">
   <div class="wrap">
@@ -12,11 +12,13 @@ endblock %}{% block content %}
     <div class="article-grid">
       {% for article in articles %}
       <article class="article-card">
-        <a class="thumb image-art image-{{ loop.index }}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}"></a>
-        <div class="card-meta"><span class="tag {{ article.category }}">{{ category_name }}</span><small>{{ article.time }} đọc</small></div>
-        <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
-        <p>{{ article.excerpt }}</p>
-        <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+        <a class="thumb{% if not article.cover_image %} image-art image-{{ loop.index }}{% endif %}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}" {% if article.cover_image %}style="background-image:linear-gradient(135deg,rgba(217,222,194,.18),rgba(75,83,32,.56)),url('{{ article.cover_image }}');background-size:cover;background-position:center"{% endif %}></a>
+        <div class="card-body">
+          <div class="card-meta"><span class="tag {{ article.category }}">{{ category_name }}</span><small>{{ article.time }} đọc</small></div>
+          <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
+          <p>{{ article.excerpt }}</p>
+          <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+        </div>
       </article>
       {% endfor %}
     </div>

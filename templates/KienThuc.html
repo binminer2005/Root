@@ -1,31 +1,46 @@
-{% extends 'base.html' %}{% block title %}Kiến thức — Roof{% endblock %}{%
-block content %}
-<section class="page-hero">
-  <div class="wrap">
-    <span class="eyebrow">Tạp chí tri thức</span>
-    <h1>Kiến thức để hiểu mình và thế giới.</h1>
-    <p>
-      Ba luồng bài viết mở ra nhiều góc nhìn hơn cho cộng đồng.
-    </p>
-  </div>
-</section>
+{% extends 'base.html' %}
+{% block title %}Kiến thức — Root{% endblock %}
+{% block content %}
 <section class="section">
   <div class="wrap">
+    <div class="section-heading">
+      <div>
+        <span class="section-number">Kiến thức</span>
+        <h1>Đọc để hiểu mình hơn</h1>
+      </div>
+    </div>
     <div class="chips">
-      {% for key,name in categories.items() %}<a
-        class="chip"
-        href="{{ url_for('category_page', category=key) }}"
-        >{{ name }}</a
-      >{% endfor %}
+      <a class="chip active" href="{{ url_for('kien_thuc') }}">Tất cả</a>
+      {% for key, name in categories.items() %}
+      <a class="chip" href="{{ url_for('category_page', category=key) }}">{{ name }}</a>
+      {% endfor %}
     </div>
     <div class="article-grid">
       {% for article in articles %}
       <article class="article-card">
-        <a class="thumb image-art image-{{ loop.index }}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}"></a>
-        <div class="card-meta"><span class="tag {{ article.category }}">{{ categories[article.category] }}</span><small>{{ article.time }} đọc</small></div>
-        <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
-        <p>{{ article.excerpt }}</p>
-        <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+        <a
+          class="thumb{% if not article.cover_image %} image-art image-{{ loop.index }}{% endif %}"
+          href="{{ url_for('article_detail', article_id=article.slug) }}"
+          aria-label="{{ article.title }}"
+          {% if article.cover_image %}style="background-image:linear-gradient(135deg,rgba(217,222,194,.18),rgba(75,83,32,.56)),url('{{ article.cover_image }}');background-size:cover;background-position:center"{% endif %}
+        ></a>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="tag {{ article.category }}">{{ categories[article.category] }}</span>
+            <small>{{ article.time }} đọc</small>
+          </div>
+          <h3>
+            <a href="{{ url_for('article_detail', article_id=article.slug) }}"
+              >{{ article.title }}</a
+            >
+          </h3>
+          <p>{{ article.excerpt }}</p>
+          <a
+            class="more-link"
+            href="{{ url_for('article_detail', article_id=article.slug) }}"
+            >Đọc tiếp <span>↗</span></a
+          >
+        </div>
       </article>
       {% endfor %}
     </div>

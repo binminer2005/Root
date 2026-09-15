@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
-{% block title %}{{ episode.title }} — Podcast — Root{% endblock %}
+{% block title %}{{ episode.title }} — Radio — Root{% endblock %}
 {% block content %}
 <section class="podcast-detail-hero">
   <div class="wrap">
-    <a class="article-back" href="{{ url_for('podcast') }}">← Quay lại Podcast</a>
+    <a class="article-back" href="{{ url_for('radio') }}">← Quay lại Radio</a>
     <div class="podcast-detail-hero-inner">
-      <div class="podcast-cover rootcast-cover" style="background-image:url('/series/Rootcast.jpg');background-size:cover;background-position:center"></div>
+      <div class="podcast-cover radio-cover" style="background-image:url('/series/Roottalk.jpg');background-size:cover;background-position:center"></div>
       <div class="podcast-detail-intro">
         <div class="article-meta">
-          <span class="tag cam-xuc">Podcast</span>
+          <span class="tag">Radio</span>
           <span class="article-time">{{ episode.time }}</span>
         </div>
         <h1>{{ episode.title }}</h1>
@@ -25,34 +25,6 @@
         </button>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="section podcast-detail-media">
-  <div class="wrap">
-    <div class="media-heading">
-      <span class="eyebrow">XEM VIDEO</span>
-      <span>Chia sẻ trên YouTube</span>
-    </div>
-    {% if episode.youtube_embed_url %}
-    <div class="youtube-frame">
-      <iframe
-        src="{{ episode.youtube_embed_url }}"
-        title="{{ episode.title }} trên YouTube"
-        loading="lazy"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe>
-    </div>
-    {% else %}
-    <div class="youtube-empty">
-      <div class="youtube-empty-mark">▶</div>
-      <div>
-        <strong>Video đang được chuẩn bị</strong>
-        <p>Tập này hiện chưa có video YouTube. Bạn vẫn có thể nghe bằng trình phát Root ở cuối trang.</p>
-      </div>
-    </div>
-    {% endif %}
   </div>
 </section>
 
@@ -75,12 +47,12 @@
   <div class="wrap">
     <div class="media-heading">
       <span class="eyebrow">NGHE TIẾP</span>
-      <a href="{{ url_for('podcast') }}">Xem tất cả →</a>
+      <a href="{{ url_for('radio') }}">Xem tất cả →</a>
     </div>
     <div class="podcast-more-grid">
       {% for item in episodes if item.id != episode.id %}
-      <a class="podcast-more-item" href="{{ url_for('podcast_detail', episode_id=item.id) }}">
-        <span class="podcast-more-number">{{ '%02d'|format(item.id) }}</span>
+      <a class="podcast-more-item" href="{{ url_for('radio_detail', episode_id=item.id) }}">
+        <span class="podcast-more-number">{{ loop.index }}</span>
         <span>
           <strong>{{ item.title }}</strong>
           <small>{{ item.description }} · {{ item.time }}</small>

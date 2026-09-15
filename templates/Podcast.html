@@ -1,7 +1,8 @@
-{% extends 'base.html' %}{% block title %}Podcast — Roof{% endblock %}{%
-block content %}
+{% extends 'base.html' %}
+{% block title %}Podcast — Root{% endblock %}
+{% block content %}
 <section class="page-hero">
-  <div class="wrap">
+  <div class="wrap page-hero-inner">
     <span class="tag cam-xuc">Podcast</span>
     <h1>Những cuộc trò chuyện dài.</h1>
     <p>
@@ -10,20 +11,40 @@ block content %}
     </p>
   </div>
 </section>
-<section class="section">
-  <div class="wrap episode-list">
-    {% for episode in episodes %}
-    <article class="episode">
-      <div class="episode-art tone-{{ episode.tone }}"><span class="episode-index">0{{ loop.index }}</span><span class="wave"></span></div>
-      <div class="episode-copy">
-        <span class="tag cam-xuc">{{ episode.kind }}</span>
-        <h3><a href="{{ url_for('podcast_detail', episode_id=episode.id) }}">{{ episode.title }}</a></h3>
-        <p>{{ episode.description }} · {{ episode.time }}</p>
-        <a class="episode-detail-link" href="{{ url_for('podcast_detail', episode_id=episode.id) }}">Xem chi tiết →</a>
-      </div>
-      <button class="play" data-title="{{ episode.title }}: {{ episode.description }}" data-description="Một cuộc trò chuyện của Roof về {{ episode.description }}." data-kind="{{ episode.kind }}" data-time="{{ episode.time }}" aria-label="Phát {{ episode.title }}">▶</button>
-    </article>
-    {% endfor %}
+<section class="section section-episodes">
+  <div class="wrap">
+    <div class="episode-list">
+      {% for episode in episodes %}
+      <article class="episode">
+        <div class="episode-art tone-{{ episode.tone }}" style="background-image:url('/series/Rootcast.jpg');background-size:cover;background-position:center"></div>
+        <div class="episode-copy">
+          <span class="tag cam-xuc">{{ episode.kind }}</span>
+          <h3>
+            <a href="{{ url_for('podcast_detail', episode_id=episode.id) }}"
+              >{{ episode.title }}</a
+            >
+          </h3>
+          <p>{{ episode.description }} · {{ episode.time }}</p>
+          <a
+            class="episode-detail-link"
+            href="{{ url_for('podcast_detail', episode_id=episode.id) }}"
+            >Xem chi tiết →</a
+          >
+        </div>
+        <button
+          class="play episode-play"
+          type="button"
+          data-title="{{ episode.title }}: {{ episode.description }}"
+          data-description="Một cuộc trò chuyện của Root về {{ episode.description }}."
+          data-kind="{{ episode.kind }}"
+          data-time="{{ episode.time }}"
+          aria-label="Phát {{ episode.title }}"
+        >
+          ▶
+        </button>
+      </article>
+      {% endfor %}
+    </div>
   </div>
 </section>
 {% endblock %}

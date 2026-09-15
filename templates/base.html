@@ -3,17 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo.png', v='roof-2') }}" />
-    <title>{% block title %}Roof{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo.png', v='root-2') }}" />
+    <title>{% block title %}Root{% endblock %}</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='style.css', v='25') }}"
+      href="{{ url_for('static', filename='style.css', v='34') }}"
     />
   </head>
   <body>
     <header class="site-header">
       <div class="nav wrap">
-        <a class="logo" href="{{ url_for('home') }}" aria-label="Roof"><img src="{{ url_for('static', filename='Logo.png', v='roof-2') }}" alt="Roof" /></a>
+        <a class="logo" href="{{ url_for('home') }}" aria-label="Root"><img src="{{ url_for('static', filename='Logo.png', v='root-2') }}" alt="Root" /></a>
         <nav class="nav-links" aria-label="Điều hướng chính">
           <a
             class="{{ 'active' if active == 'home' }}"
@@ -38,7 +38,7 @@
           <a
             class="{{ 'active' if active == 'landing' }}"
             href="{{ url_for('landingpage') }}"
-            >Về Roof</a
+            >Về Root</a
           >
         </nav>
         <div class="nav-actions">
@@ -52,7 +52,7 @@
             <summary><span class="account-avatar">{{ current_user.name[:1]|upper }}</span><span class="account-name">{{ current_user.name }}</span><span aria-hidden="true">⌄</span></summary>
             <div class="account-dropdown">
               <a href="{{ url_for('profile') }}"><strong>Trang cá nhân</strong><small>Thông tin và số bài đăng</small></a>
-              <a href="{{ url_for('write_article') }}"><strong>Viết bài</strong><small>Gửi bài cho Roof</small></a>
+              <a href="{{ url_for('write_article') }}"><strong>Viết bài</strong><small>Gửi bài cho Root</small></a>
               <a href="{{ url_for('my_articles') }}"><strong>Bài viết của tôi</strong><small>Theo dõi trạng thái bài</small></a>
               {% if current_user.role == 'admin' %}<a href="{{ url_for('admin_dashboard') }}"><strong>Quản trị</strong><small>Đăng bài và duyệt bài</small></a>{% endif %}
               <a class="account-logout" href="{{ url_for('logout') }}">Đăng xuất</a>
@@ -69,11 +69,11 @@
       {% if messages %}<div class="flash-stack wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
     {% endwith %}
     <main>{% block content %}{% endblock %}</main>
-    <section class="audio-player" id="audioPlayer" aria-label="Trình phát Roof" hidden>
+    <section class="audio-player" id="audioPlayer" aria-label="Trình phát Root" hidden>
       <div class="player-detail" id="playerDetail" hidden>
         <div class="player-detail-inner wrap">
           <div class="detail-cover"><span class="detail-wave"></span><span id="detailKind">RADIO</span></div>
-          <div class="detail-copy"><span class="detail-eyebrow">ĐANG PHÁT TRÊN ROOF</span><h2 id="detailTitle">Chưa chọn tập</h2><p id="detailDescription">Chọn một tập Radio hoặc Podcast để bắt đầu lắng nghe.</p><div class="detail-meta"><span id="detailTime">-- phút</span><span>·</span><span>Không làm gián đoạn việc đọc</span></div></div>
+          <div class="detail-copy"><span class="detail-eyebrow">ĐANG PHÁT TRÊN ROOT</span><h2 id="detailTitle">Chưa chọn tập</h2><p id="detailDescription">Chọn một tập Radio hoặc Podcast để bắt đầu lắng nghe.</p><div class="detail-meta"><span id="detailTime">-- phút</span><span>·</span><span>Không làm gián đoạn việc đọc</span></div></div>
           <aside class="detail-queue" aria-label="Mục lục các tập đang có">
             <div class="detail-queue-heading"><span>MỤC LỤC</span><small id="queueCount"></small></div>
             <div class="detail-queue-list" id="detailQueueList"></div>
@@ -96,7 +96,7 @@
     <footer class="site-footer">
       <div class="wrap footer-grid">
         <div>
-          <a class="logo logo-light" href="{{ url_for('home') }}" aria-label="Roof"><img src="{{ url_for('static', filename='Root_LogoWhite.png', v='roof-2') }}" alt="Roof" /></a>
+          <a class="logo logo-light" href="{{ url_for('home') }}" aria-label="Root"><img src="{{ url_for('static', filename='Root_LogoWhite.png', v='root-2') }}" alt="Root" /></a>
           <p class="footer-tagline">The Roots Of Us</p>
         </div>
         <div>
@@ -104,16 +104,16 @@
           ><a href="{{ url_for('kien_thuc') }}">Kiến thức</a
           ><a href="{{ url_for('radio') }}">Radio</a
           ><a href="{{ url_for('podcast') }}">Podcast</a
-          ><a href="{{ url_for('landingpage') }}">Về Roof</a>
+          ><a href="{{ url_for('landingpage') }}">Về Root</a>
         </div>
         <div>
           <strong>Tài khoản</strong>
           <a href="{{ url_for('sign') }}">Đăng nhập</a>
-          <a href="{{ url_for('register') }}">Tham gia Roof</a>
+          <a href="{{ url_for('register') }}">Tham gia Root</a>
         </div>
       </div>
       <div class="wrap footer-bottom">
-        © 2026 Roof
+        © 2026 Root. All rights reserved. <a href="{{ url_for('privacy') }}">Chính sách bảo mật</a> | <a href="{{ url_for('terms') }}">Điều khoản dịch vụ</a>
       </div>
     </footer>
     {% block scripts %}{% endblock %}
@@ -145,7 +145,7 @@
       let playerPercent = 0;
       let playerItems = [];
       let playerIndex = 0;
-      const playerStorageKey = "roof-audio-player";
+      const playerStorageKey = "root-audio-player";
 
       function savePlayerState(isPlaying = player.classList.contains("is-playing")) {
         const item = playerItems[playerIndex];
@@ -170,8 +170,8 @@
 
       function startPlayer() {
         player.classList.add("is-playing");
-        playerToggle.textContent = "Ⅱ";
-        playerMeta.textContent = "Đang phát · Roof";
+        playerToggle.textContent = "—";
+        playerMeta.textContent = "Đang phát · Root";
         playerTimer = window.setInterval(() => {
           playerPercent = Math.min(playerPercent + 1, 100);
           playerProgress.style.width = `${playerPercent}%`;
@@ -216,7 +216,7 @@
         detailDescription.textContent = button.dataset.description;
         detailTime.textContent = button.dataset.time;
         detailProgress.style.width = `${playerPercent}%`;
-        detailToggle.textContent = player.classList.contains("is-playing") ? "Ⅱ" : "▶";
+        detailToggle.textContent = player.classList.contains("is-playing") ? "—" : "▶";
         renderQueue();
       }
 
@@ -230,7 +230,7 @@
         playerIndex = matchingItem ? pageItems.indexOf(matchingItem) : 0;
         playerTitle.textContent = saved.title;
         playerKind.textContent = saved.kind;
-        playerMeta.textContent = saved.isPlaying ? "Đang phát · Roof" : "Đã tạm dừng";
+        playerMeta.textContent = saved.isPlaying ? "Đang phát · Root" : "Đã tạm dừng";
         playerPercent = Number(saved.percent) || 0;
         playerProgress.style.width = `${playerPercent}%`;
         player.hidden = false;

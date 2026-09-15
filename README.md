@@ -13,13 +13,13 @@ SQLite được khởi tạo tự động tại `root.sqlite3`. Lần chạy đ�
 
 ```powershell
 pip install -r requirements.txt
-$env:DATABASE_URL = "postgresql://user:password@localhost:5432/roof"
+$env:DATABASE_URL = "postgresql://user:password@localhost:5432/root"
 python app.py
 ```
 
 Khi có `DATABASE_URL`, ứng dụng tự tạo các bảng `users`, `articles` và `episodes`, sau đó seed dữ liệu mẫu còn thiếu từ `content.json`. Khi bỏ biến này, ứng dụng tiếp tục dùng SQLite như mặc định.
 
-Tài khoản admin mặc định dùng `admin@roof.local` / `admin12345`. Nên đổi trước khi chạy thật bằng:
+Tài khoản admin mặc định dùng `admin@root.local` / `admin12345`. Nên đổi trước khi chạy thật bằng:
 
 ```powershell
 $env:ADMIN_EMAIL = "admin@example.com"

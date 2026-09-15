@@ -1,6 +1,13 @@
-{% extends 'base.html' %} {% block title %}{{ article.title }} — Roof{%
+{% extends 'base.html' %} {% block title %}{{ article.title }} — Root{%
 endblock %} {% block content %}
 <article class="article-page">
+  {% if article.cover_image %}
+  <div class="article-cover-wrap">
+    <div class="wrap">
+      <div class="article-cover" style="background-image:url('{{ article.cover_image }}')"></div>
+    </div>
+  </div>
+  {% endif %}
   <header class="article-header">
     <div class="wrap article-narrow">
       <a
@@ -15,7 +22,7 @@ endblock %} {% block content %}
       <h1>{{ article.title }}</h1>
       <p class="article-lead">{{ article.excerpt }}</p>
       <div class="article-byline">
-        {{ article.author }} <span>·</span> Biên tập Roof
+        {{ article.author }} <span>·</span> Biên tập Root
       </div>
     </div>
   </header>

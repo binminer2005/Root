@@ -1,61 +1,194 @@
-{% extends 'base.html' %}{% block title %}Trang chủ — Roof{% endblock %}{%
-block content %}
-<div class="wrap home-wrap">
-  <section class="hero-editorial">
-    <article class="feature">
-      <a class="feature-art image-art image-art-main" href="{{ url_for('article_detail', article_id='nao-bo-tuoi-25') }}" aria-label="Đọc bài Não bộ tuổi 25 vẫn đang tự sửa mình"></a>
-      <div class="feature-body">
-        <div class="kicker-row"><span class="tag hoc-thuat">Học thuật</span><span class="reading-time">5 phút đọc</span></div>
-        <h1>Não bộ tuổi 25 vẫn đang tự sửa mình</h1>
-        <p>Ta không hề chậm lớn. Não bộ chỉ đang âm thầm cập nhật bản đồ của chính mình.</p>
-        <a class="story-link" href="{{ url_for('article_detail', article_id='nao-bo-tuoi-25') }}">Đọc bài <span>↗</span></a>
+{% extends 'base.html' %}
+{% block title %}Trang chủ — Root{% endblock %}
+{% block content %}
+
+{# —— HERO BANNER (Median-style) —— #}
+<section class="median-hero">
+  <div class="wrap median-hero-inner">
+    <div class="median-hero-copy">
+      <h1>Chào mừng đến Root — nơi tri thức gặp cảm xúc.</h1>
+      <p>
+        Đọc chậm, nghe rõ hơn về chính mình. Bài viết, radio và podcast cho những
+        ngày cần được hiểu.
+      </p>
+      <div class="median-hero-actions">
+        <a class="button button-dark" href="#bai-viet">Khám phá bài viết</a>
+        <a class="button button-outline" href="{{ url_for('register') }}">Tham gia Root</a>
       </div>
-    </article>
-    <aside class="trending">
-      <div class="module-label"><span>01</span><h2>Được đọc nhiều</h2></div>
-      {% for article in articles[:4] %}
-      <a class="trend" href="{{ url_for('article_detail', article_id=article.slug) }}"><span class="rank">0{{ loop.index }}</span><span class="trend-copy"><strong>{{ article.title }}</strong><small>{{ article.time }} đọc · {{ ['4.700', '4.600', '4.500', '4.400'][loop.index0] }} lượt xem</small></span></a>
-      {% endfor %}
-      <a class="all-link" href="#bai-viet">Xem toàn bộ bài viết <span>→</span></a>
-    </aside>
-  </section>
-</div>
+    </div>
+    <div class="median-hero-visual" aria-hidden="true">
+      <div class="median-hero-shape">
+        <span class="median-hero-mark">ROOT</span>
+        <span class="median-hero-wave"></span>
+      </div>
+    </div>
+  </div>
+</section>
 
-<section class="section latest-section" id="bai-viet">
+{# —— FEATURED —— #}
+<section class="section median-featured">
   <div class="wrap">
-    <div class="section-heading"><div><span class="section-number">02</span><h2>Mới trên Roof</h2></div><span class="eyebrow">Nhiều luồng, một nhịp đọc</span></div>
-    <div class="chips"><button class="chip active" data-filter="all">Tất cả</button>{% for key,name in categories.items() %}<button class="chip" data-filter="{{ key }}">{{ name }}</button>{% endfor %}</div>
-    <div class="article-grid" id="articleGrid">
-      {% for article in articles %}
-      <article class="article-card" data-category="{{ article.category }}">
-        <a class="thumb image-art image-{{ loop.index }}" href="{{ url_for('article_detail', article_id=article.slug) }}" aria-label="{{ article.title }}"></a>
-        <div class="card-meta"><span class="tag {{ article.category }}">{{ categories[article.category] }}</span><small>{{ article.time }} đọc</small></div>
-        <h3><a href="{{ url_for('article_detail', article_id=article.slug) }}">{{ article.title }}</a></h3>
-        <p>{{ article.excerpt }}</p>
-        <a class="more-link" href="{{ url_for('article_detail', article_id=article.slug) }}">Đọc tiếp <span>↗</span></a>
+    <div class="median-section-head">
+      <h2>Nổi bật</h2>
+    </div>
+
+    <div class="median-featured-grid">
+      {% if articles %}
+      {# Large feature #}
+      <article class="median-feature-main">
+        <a
+          class="median-thumb{% if not articles[0].cover_image %} image-art image-art-main{% endif %}"
+          href="{{ url_for('article_detail', article_id=articles[0].slug) }}"
+          aria-label="{{ articles[0].title }}"
+          {% if articles[0].cover_image %}style="background-image:url('{{ articles[0].cover_image }}');background-size:cover;background-position:center"{% endif %}
+        ></a>
+        <div class="median-feature-body">
+          <h3>
+            <a href="{{ url_for('article_detail', article_id=articles[0].slug) }}"
+              >{{ articles[0].title }}</a
+            >
+          </h3>
+          <p>{{ articles[0].excerpt }}</p>
+          <div class="median-meta">
+            <span class="tag {{ articles[0].category }}">{{ categories[articles[0].category] }}</span>
+            <span>{{ articles[0].time }} đọc</span>
+          </div>
+        </div>
       </article>
-      {% endfor %}
+
+      {# Side stack #}
+      <div class="median-feature-side">
+        {% for article in articles[1:5] %}
+        <article class="median-feature-item">
+          <a
+            class="median-thumb-sm{% if not article.cover_image %} image-art image-{{ loop.index + 1 }}{% endif %}"
+            href="{{ url_for('article_detail', article_id=article.slug) }}"
+            aria-label="{{ article.title }}"
+            {% if article.cover_image %}style="background-image:url('{{ article.cover_image }}');background-size:cover;background-position:center"{% endif %}
+          ></a>
+          <div>
+            <h4>
+              <a href="{{ url_for('article_detail', article_id=article.slug) }}"
+                >{{ article.title }}</a
+              >
+            </h4>
+            <div class="median-meta">
+              <span>{{ categories[article.category] }}</span>
+              <span>·</span>
+              <span>{{ article.time }} đọc</span>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>
 
-<section class="section audio-section">
-  <div class="wrap">
-    <div class="section-heading"><div><span class="section-number">03</span><h2>Tần sóng đang phát</h2></div><a class="more-link" href="{{ url_for('radio') }}">Xem tất cả <span>→</span></a></div>
-    <div class="episode-list">
-      {% for episode in episodes %}
-      <article class="episode"><div class="episode-art tone-{{ episode.tone }}"><span class="episode-index">0{{ loop.index }}</span><span class="wave"></span></div><div class="episode-copy"><span class="tag">{{ episode.kind }}</span><h3>{{ episode.title }}: {{ episode.description }}</h3><p>{{ episode.time }} · Một cuộc trò chuyện của Roof</p></div><button class="play" data-title="{{ episode.title }}: {{ episode.description }}" data-description="Một cuộc trò chuyện của Roof về {{ episode.description }}." data-kind="{{ episode.kind }}" data-time="{{ episode.time }}" aria-label="Phát {{ episode.title }}">▶</button></article>
-      {% endfor %}
+{# —— LATEST + POPULAR —— #}
+<section class="section median-posts" id="bai-viet">
+  <div class="wrap median-posts-grid">
+    <div class="median-latest">
+      <div class="median-section-head">
+        <h2>Mới nhất</h2>
+        <div class="chips median-chips">
+          <button class="chip active" data-filter="all" type="button">Tất cả</button>
+          {% for key, name in categories.items() %}
+          <button class="chip" data-filter="{{ key }}" type="button">{{ name }}</button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="median-latest-grid" id="articleGrid">
+        {% for article in articles %}
+        <article class="median-post-card" data-category="{{ article.category }}">
+          <a
+            class="median-thumb{% if not article.cover_image %} image-art image-{{ loop.index }}{% endif %}"
+            href="{{ url_for('article_detail', article_id=article.slug) }}"
+            aria-label="{{ article.title }}"
+            {% if article.cover_image %}style="background-image:url('{{ article.cover_image }}');background-size:cover;background-position:center"{% endif %}
+          ></a>
+          <div class="median-post-body">
+            <h3>
+              <a href="{{ url_for('article_detail', article_id=article.slug) }}"
+                >{{ article.title }}</a
+              >
+            </h3>
+            <p>{{ article.excerpt }}</p>
+            <div class="median-meta">
+              <span class="tag {{ article.category }}">{{ categories[article.category] }}</span>
+              <span>{{ article.time }} đọc</span>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
     </div>
+
+    <aside class="median-popular">
+      <div class="median-section-head">
+        <h2>Phổ biến</h2>
+      </div>
+      <ol class="median-popular-list">
+        {% for article in articles[:5] %}
+        <li>
+          <a href="{{ url_for('article_detail', article_id=article.slug) }}">
+            <span class="median-pop-num">{{ '%02d'|format(loop.index) }}</span>
+            <span class="median-pop-copy">
+              <strong>{{ article.title }}</strong>
+              <small>{{ categories[article.category] }} · {{ article.time }} đọc</small>
+            </span>
+          </a>
+        </li>
+        {% endfor %}
+      </ol>
+
+      {% if episodes %}
+      <div class="median-section-head median-section-head--sub">
+        <h2>Đang phát</h2>
+        <a class="more-link" href="{{ url_for('radio') }}">Tất cả →</a>
+      </div>
+      <div class="median-audio-mini">
+        {% for episode in episodes[:3] %}
+        <button
+          class="play median-audio-row"
+          type="button"
+          data-title="{{ episode.title }}: {{ episode.description }}"
+          data-description="Một cuộc trò chuyện của Root về {{ episode.description }}."
+          data-kind="{{ episode.kind }}"
+          data-time="{{ episode.time }}"
+        >
+          <span class="median-audio-art tone-{{ episode.tone }}">▶</span>
+          <span>
+            <strong>{{ episode.title }}</strong>
+            <small>{{ episode.kind }} · {{ episode.time }}</small>
+          </span>
+        </button>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
   </div>
 </section>
+
 {% endblock %}
 {% block scripts %}
 <script>
-  document.querySelectorAll(".chip").forEach((chip) => chip.addEventListener("click", () => {
-    document.querySelectorAll(".chip").forEach((item) => item.classList.remove("active"));
-    chip.classList.add("active");
-    document.querySelectorAll("#articleGrid .article-card").forEach((card) => card.classList.toggle("hidden", chip.dataset.filter !== "all" && card.dataset.category !== chip.dataset.filter));
-  }));
+  document.querySelectorAll(".median-chips .chip").forEach((chip) =>
+    chip.addEventListener("click", () => {
+      document
+        .querySelectorAll(".median-chips .chip")
+        .forEach((item) => item.classList.remove("active"));
+      chip.classList.add("active");
+      document.querySelectorAll("#articleGrid .median-post-card").forEach((card) =>
+        card.classList.toggle(
+          "hidden",
+          chip.dataset.filter !== "all" &&
+            card.dataset.category !== chip.dataset.filter
+        )
+      );
+    })
+  );
 </script>
 {% endblock %}

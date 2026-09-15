@@ -1,33 +1,200 @@
-{% extends 'base.html' %}{% block title %}Roof — The Roots Of Us{% endblock
-%}{% block content %}
-<section class="page-hero landing-hero">
+{% extends 'base.html' %}
+{% block title %}Về Root — The Roots Of Us{% endblock %}
+{% block content %}
+
+{# —— HERO —— #}
+<section class="about-hero">
+  <div class="wrap about-hero-inner">
+    <div class="about-hero-copy">
+      <span class="about-eyebrow">Về Root</span>
+      <h1>The Roots Of Us</h1>
+      <p class="about-lead">
+        Root là không gian đọc và lắng nghe dành cho những ai muốn hiểu mình rõ
+        hơn — qua kiến thức tâm lý, cảm xúc đời thường và những cuộc trò chuyện
+        đủ chậm.
+      </p>
+      <div class="about-hero-actions">
+        <a class="button button-dark" href="{{ url_for('home') }}">Bắt đầu đọc</a>
+        <a class="button button-outline" href="{{ url_for('register') }}">Tham gia cộng đồng</a>
+      </div>
+    </div>
+    <div class="about-hero-panel" aria-hidden="true">
+      <div class="about-hero-card">
+        <span class="about-hero-label">ROOT</span>
+        <p> · Emotion Theory <br> · Self-concept Theory <br> · Self-Determination Theory </br></p>
+        <div class="about-hero-stats">
+          <div><strong>3</strong><span>chuyên mục</span></div>
+          <div><strong>∞</strong><span>câu chuyện</span></div>
+          <div><strong>24/7</strong><span>tần sóng</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# —— MISSION —— #}
+<section class="section about-mission">
+  <div class="wrap about-mission-grid">
+    <div>
+      <span class="section-number">01</span>
+      <h2>Vì sao có Root?</h2>
+    </div>
+    <div class="about-mission-text">
+      <p>
+        Nhiều kiến thức tâm lý chỉ nằm trong sách chuyên ngành hoặc nội dung
+        quá ngắn trên mạng xã hội. Root muốn đứng ở giữa: đủ sâu để đáng tin,
+        đủ gần để áp dụng vào ngày thường.
+      </p>
+      <p>
+        Chúng tôi tin rằng hiểu mình không phải là đặc quyền của ai đó — mà là
+        kỹ năng có thể học, luyện và chia sẻ. Root sinh ra để giữ nhịp đó.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# —— PILLARS —— #}
+<section class="section about-pillars">
   <div class="wrap">
-    <h1>The Roots Of Us</h1>
-    <p>
-      Một nền tảng blog đưa kiến thức tâm lý học đến gần hơn với đời sống, giúp người Việt hiểu mình và phát triển bản thân.
-    </p>
-    <a class="button button-dark" href="{{ url_for('home') }}"
-      >Khám phá Roof</a
-    >
+    <div class="median-section-head">
+      <h2>Ba trụ cột của Root</h2>
+    </div>
+    <div class="about-pillar-grid">
+      <article class="about-pillar">
+        <span class="about-pillar-num">01</span>
+        <span class="tag hoc-thuat">Học thuật</span>
+        <h3>Kiến thức có gốc</h3>
+        <p>
+          Bài viết dựa trên tâm lý học và nghiên cứu, diễn đạt bằng ngôn ngữ
+          đời thường — để bạn nắm được “vì sao”, không chỉ “làm sao”.
+        </p>
+      </article>
+      <article class="about-pillar">
+        <span class="about-pillar-num">02</span>
+        <span class="tag cam-xuc">Cảm xúc</span>
+        <h3>Gọi tên điều đang xảy ra</h3>
+        <p>
+          Những câu chuyện về ghen tị, sợ bị bỏ rơi, áp lực thành công… được
+          viết như đang nói chuyện với một người bạn đủ tỉnh táo.
+        </p>
+      </article>
+      <article class="about-pillar">
+        <span class="about-pillar-num">03</span>
+        <span class="tag chua-lanh">Chữa lành</span>
+        <h3>Thực hành nhẹ, bền</h3>
+        <p>
+          Không hứa thay đổi trong một đêm. Root hướng tới thói quen nhỏ —
+          nghỉ đúng cách, đặt ranh giới, lắng nghe cơ thể — để đi đường dài.
+        </p>
+      </article>
+    </div>
   </div>
 </section>
-<section class="section">
-  <div class="wrap article-grid landing-grid">
-    <article class="article-card">
-      <span class="tag">Tạp chí</span>
-      <h3>Đọc nhanh để thấy mình trong một câu chuyện</h3>
-      <p>Nhiều bài viết, nhiều tiếng nói, cùng một nhịp tò mò.</p>
-    </article>
-    <article class="article-card">
-      <span class="tag cam-xuc">Cộng đồng</span>
-      <h3>Lan tỏa điều đáng được gọi tên</h3>
-      <p>Nơi suy nghĩ cá nhân trở thành cuộc trò chuyện chung.</p>
-    </article>
-    <article class="article-card">
-      <span class="tag chua-lanh">Âm thanh</span>
-      <h3>Radio và podcast cho những khoảng nghỉ</h3>
-      <p>Những giọng nói đi cùng bạn trên đường về.</p>
-    </article>
+
+{# —— WHAT YOU GET —— #}
+<section class="section about-offer">
+  <div class="wrap">
+    <div class="median-section-head">
+      <h2>Bạn sẽ tìm thấy gì?</h2>
+    </div>
+    <div class="about-offer-grid">
+      <a class="about-offer-card" href="{{ url_for('kien_thuc') }}">
+        <div class="about-offer-icon tone-moss">Aa</div>
+        <div>
+          <h3>Tạp chí tri thức</h3>
+          <p>Bài viết ngắn–vừa, có hierarchy rõ, dễ đọc trên điện thoại và máy tính.</p>
+          <span class="more-link">Xem kiến thức <span>→</span></span>
+        </div>
+      </a>
+      <a class="about-offer-card" href="{{ url_for('radio') }}">
+        <div class="about-offer-icon tone-leaf">♪</div>
+        <div>
+          <h3>RootTalk</h3>
+          <p>Tập phát ngắn, gần gũi — nghe lúc đi làm về hoặc trước khi ngủ.</p>
+          <span class="more-link">Nghe Radio <span>→</span></span>
+        </div>
+      </a>
+      <a class="about-offer-card" href="{{ url_for('podcast') }}">
+        <div class="about-offer-icon tone-sand">◉</div>
+        <div>
+          <h3>Rootcast</h3>
+          <p>Cuộc trò chuyện dài hơn về cảm xúc, công việc và cách lớn lên.</p>
+          <span class="more-link">Xem Podcast <span>→</span></span>
+        </div>
+      </a>
+      <a class="about-offer-card" href="{{ url_for('write_article') }}">
+        <div class="about-offer-icon tone-clay">✎</div>
+        <div>
+          <h3>Góc cộng đồng</h3>
+          <p>Gửi bài của bạn. Ban biên tập duyệt trước khi xuất hiện trên Root.</p>
+          <span class="more-link">Viết bài <span>→</span></span>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
+
+{# —— VALUES —— #}
+<section class="section about-values">
+  <div class="wrap about-values-inner">
+    <div class="about-values-intro">
+      <span class="section-number">02</span>
+      <h2>Cách Root làm việc</h2>
+      <p>
+        Chúng tôi không tối ưu cho clickbait. Mỗi bài và mỗi tập âm thanh đều
+        đi qua một câu hỏi: “Điều này có giúp người đọc/nghe hiểu mình hơn
+        không?”
+      </p>
+    </div>
+    <ul class="about-value-list">
+      <li>
+        <strong>Chậm mà rõ</strong>
+        <span>Ưu tiên chiều sâu và độ chính xác hơn tốc độ đăng bài.</span>
+      </li>
+      <li>
+        <strong>Ngôn ngữ gần</strong>
+        <span>Tránh thuật ngữ thừa; giữ ví dụ đời thường, dễ nhận ra mình trong đó.</span>
+      </li>
+      <li>
+        <strong>Tôn trọng ranh giới</strong>
+        <span>Nội dung hỗ trợ nhận thức — không thay thế trị liệu chuyên môn.</span>
+      </li>
+      <li>
+        <strong>Cộng đồng có kiểm duyệt</strong>
+        <span>Bài gửi từ bạn đọc được duyệt trước khi xuất bản công khai.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+{# —— QUOTE / MANIFESTO —— #}
+<section class="about-manifesto">
+  <div class="wrap">
+    <blockquote>
+      <p>
+        “Bạn không cần giải quyết toàn bộ câu hỏi ngay hôm nay. Chỉ cần gọi
+        đúng tên điều đang xảy ra — thế là đủ để bắt đầu.”
+      </p>
+      <footer>— Root Editorial</footer>
+    </blockquote>
+  </div>
+</section>
+
+{# —— CTA —— #}
+<section class="section about-cta">
+  <div class="wrap about-cta-box">
+    <div>
+      <h2>Sẵn sàng vào Root?</h2>
+      <p>
+        Đọc bài mới, nghe radio, hoặc gửi một góc nhìn của bạn. Mọi thứ bắt đầu
+        từ một bước nhỏ.
+      </p>
+    </div>
+    <div class="about-cta-actions">
+      <a class="button button-dark" href="{{ url_for('home') }}">Vào trang chủ</a>
+      <a class="button button-outline" href="{{ url_for('register') }}">Tạo tài khoản</a>
+    </div>
+  </div>
+</section>
+
 {% endblock %}
