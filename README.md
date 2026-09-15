@@ -1,5 +1,15 @@
 # ROOT
 
+## Deploy trên Render
+
+1. Push repository `binminer2005/Root` lên GitHub, sau đó vào Render chọn **New → Blueprint**.
+2. Chọn repository và branch `main`; Render sẽ đọc `render.yaml`, tạo web service `root` và PostgreSQL `root-db`.
+3. Trong Environment của service, điền `ADMIN_EMAIL` và `ADMIN_PASSWORD` bằng thông tin quản trị mới.
+4. Nếu dùng Google login, điền `GOOGLE_CLIENT_ID` và `GOOGLE_CLIENT_SECRET`, rồi thêm callback URL `https://<ten-service>.onrender.com/auth/google/callback` trong Google Cloud.
+5. Bấm **Apply** hoặc **Manual Deploy → Deploy latest commit**. Build dùng `pip install -r requirements.txt`, start dùng `gunicorn app:app`.
+
+`DATABASE_URL` được nối tự động từ PostgreSQL trong `render.yaml`. Không nên bỏ biến này vì SQLite trên Render không phải nơi lưu dữ liệu bền vững. Các ảnh trong thư mục `Series` đã được commit cùng repository và được app phục vụ tại `/series/...`.
+
 ## Chạy ứng dụng
 
 ```powershell
